@@ -1,0 +1,416 @@
+{
+	"frames": [
+
+		{
+			"filename": "NinaIdle (1).png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "NinaIdle (2).png",
+			"frame": {
+				"x": 255,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "NinaIdle (3).png",
+			"frame": {
+				"x": 505,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "NinaIdle (4).png",
+			"frame": {
+				"x": 505,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5M (1).png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5M (2).png",
+			"frame": {
+				"x": 1010,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5M (3).png",
+			"frame": {
+				"x": 1235,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5L (1).png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5L (2).png",
+			"frame": {
+				"x": 245,
+				"y": 545,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5L (3).png",
+			"frame": {
+				"x": 510,
+				"y": 545,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5H (1).png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5H (2).png",
+			"frame": {
+				"x": 980,
+				"y": 545,
+				"w": 180,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5H (3).png",
+			"frame": {
+				"x": 1170,
+				"y": 545,
+				"w": 200,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "5H (4).png",
+			"frame": {
+				"x": 1370,
+				"y": 545,
+				"w": 200,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "Default.png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "Crouch (1).png",
+			"frame": {
+				"x": 15,
+				"y": 80,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 10,
+				"h": 400
+			}
+		},
+		{
+			"filename": "Crouch (2).png",
+			"frame": {
+				"x": 225,
+				"y": 1015,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "Crouch (3).png",
+			"frame": {
+				"x": 465,
+				"y": 1015,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "CrouchDefault.png",
+			"frame": {
+				"x": 465,
+				"y": 1015,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "Nina.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 2000,
+			"h": 10000
+		},
+		"scale": "1",
+		"smartupdate": "$TexturePacker:SmartUpdate:904f4adc1fdcd9cc85b202fde7411999:15b71623bc6f98bc3ccb2c9b504b952e:ece2dd005824f07bc50b57ffe85f2ef5$"
+	}
+}

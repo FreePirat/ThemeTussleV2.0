@@ -1,0 +1,93 @@
+# GameEngine Config
+
+Window  1920 1080
+
+Font    Arial           ../assets/fonts/arial.ttf
+Font    main            ../assets/fonts/Sansation.ttf
+Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
+
+Music MainTheme         ../assets/Music/MainTheme.ogg
+Music WesternTheme         ../assets/Music/BountyToRally.ogg
+
+# Textures
+Texture Background      ../assets/Textures/background.png
+Texture Title           ../assets/Textures/FroggerTitle.png
+Texture Stage      	../assets/Textures/stage.png
+Texture Settings      	../assets/Textures/settings.png
+Texture Audio      	../assets/Textures/audio.png
+Texture danger 		../assets/Textures/danger.png
+Texture Kingdom 	../assets/Textures/Kingdom.png
+Texture Western 	../assets/Textures/Western.png
+Texture danger2 	../assets/Textures/danger2.png
+Texture Kingdom2 	../assets/Textures/Kingdom2.png
+Texture Western2 	../assets/Textures/Western2.png
+Texture StageSelect	../assets/Textures/stageSelect.png
+Texture Select	 	../assets/Textures/select.png
+Texture Select1P	 ../assets/Textures/select_1P.png
+Texture Nina        	../assets/Textures/Nina.png
+Texture CSNina		../assets/Textures/CSNina.png
+Texture CSNinaSelected	../assets/Textures/CSNina_Selected.png
+Texture CSSuzie		../assets/Textures/CSSuzie.png
+Texture CSSuzieSelected	../assets/Textures/CSSuzie_Selected.png
+Texture CSRandom	../assets/Textures/CSRandom.png
+Texture CSRandomSelected ../assets/Textures/CSRandom_Selected.png
+Texture CSLeo		../assets/Textures/CSLeo.png
+Texture CSLeoSelected	../assets/Textures/CSLeo_Selected.png
+Texture CSCharlie	../assets/Textures/CSCharlie.png
+Texture CSCharlieSelected ../assets/Textures/CSCharlie_Selected.png
+Texture NinaHealthbar ../assets/Textures/NinaHealthbar.png
+
+# Sprites
+Sprite Background       Background   0 0  1920 1080
+Sprite Stage       	Stage   0 0  1920 1080
+Sprite Settings       	Settings   0 0  1920 1080
+Sprite Audio       	Audio   0 0  1920 1080
+Sprite Title            Title 0 0 480 600
+Sprite StageSelect      StageSelect 0 0  1920 1080
+Sprite Select           Select 0 0  1920 1080
+Sprite Select1P         Select1P 0 0  1920 1080
+Sprite danger 		danger	0  0  1000 500
+Sprite Kingdom 		Kingdom	0  0  1920 1080	
+Sprite Western 		Western	0  0  1920 1080
+Sprite danger2 		danger2	0  0  1240 330
+Sprite Kingdom2 	Kingdom2 0  0  1240 330
+Sprite Western2		Western2 0  0  1240 330
+Sprite CSNina		CSNina	0  0  200 200
+Sprite CSNinaSelected	CSNinaSelected	0  0  200 200
+Sprite CSSuzie		CSSuzie	0  0  200 200
+Sprite CSSuzieSelected	CSSuzieSelected	0  0  200 200
+Sprite CSRandom		CSRandom	0  0  200 200
+Sprite CSRandomSelected CSRandomSelected	0  0  200 200
+Sprite CSLeo		CSLeo	0  0  200 200
+Sprite CSLeoSelected	CSLeoSelected	0  0  200 200
+Sprite CSCharlie	CSCharlie	0  0  200 200
+Sprite CSCharlieSelected CSCharlieSelected	0  0  200 200
+
+#
+# SOUNDS
+Sound Select             ../assets/Sound/select.wav
+
+JSON                    ../assets/Textures/characterJSON.json
+
+#
+#  Animation    Name            Texture     Speed   Repeats
+Animation       NDefault         Nina    0        no
+Animation       NCrouchDefault   Nina    0        no
+Animation       NJumpDefault     Nina    0        no
+Animation       NIdle        	Nina    4        no
+Animation       NWalkF	        Nina    4        yes
+Animation       NWalkB	        Nina    4        yes
+Animation       NHit		Nina    4        no
+Animation       N5M	        Nina    3        no
+Animation       N5L	        Nina    4        no
+Animation       N5H	        Nina    4        no
+Animation       N2L		Nina    4        no
+Animation       N2M		Nina    3        no
+Animation       N2H		Nina    4        no
+Animation       N8L		Nina    2        no
+Animation       N8M		Nina    2        no
+Animation       N8H		Nina    3        no
+Animation       N6L		Nina    3        no
+Animation       N6M		Nina    4        no
+Animation       N6H		Nina    4        no
+

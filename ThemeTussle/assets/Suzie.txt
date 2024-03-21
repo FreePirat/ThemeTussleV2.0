@@ -1,0 +1,151 @@
+#Suzie
+
+#Animations 
+
+#DefaultAnimations
+DefaultAnimations SDefault SCrouchDefault SJumpDefault SIdle SWalkF SWalkB	
+
+#StandingHits
+StandingHits  S5L S5M S5H
+
+#CrouchingHits	       
+CrouchingHits S2L S2M S2H
+
+#JumpingHits
+JumpingHits S8L S8M S8H	
+
+#ForwardHits
+ForwardHits S6L S6M S6H
+
+#########################################################################
+
+#HitboxPos
+
+#5L
+HitboxPos 0 0
+#5M
+HitboxPos 0 0
+#5H
+HitboxPos 0 0
+#2L
+HitboxPos 0 0
+#2M
+HitboxPos 0 0
+#2H
+HitboxPos 0 0
+#6L
+HitboxPos 0 0
+#6M
+HitboxPos 0 0
+#6H
+HitboxPos 0 0
+#8L
+HitboxPos 0 0
+#8M
+HitboxPos 0 0
+#8H
+HitboxPos 0 0
+
+#########################################################################
+
+#HitboxSize
+
+#5L
+HitboxSize 0 0
+#5M
+HitboxSize 0 0
+#5H
+HitboxSize 0 0
+#2L
+HitboxSize 0 0
+#2M
+HitboxSize 0 0
+#2H
+HitboxSize 0 0
+#6L
+HitboxSize 0 0
+#6M
+HitboxSize 0 0
+#6H
+HitboxSize 0 0
+#8L
+HitboxSize 0 0
+#8M
+HitboxSize 0 0
+#8H
+HitboxSize 0 0
+
+#########################################################################
+
+#HurtboxPos
+
+#5L
+HurtboxPos 0 0
+#5M
+HurtboxPos 0 0
+#5H
+HurtboxPos 0 0
+#2L
+HurtboxPos 0 0
+#2M
+HurtboxPos 0 0
+#2H
+HurtboxPos 0 0
+#6L
+HurtboxPos 0 0
+#6M
+HurtboxPos 0 0
+#6H
+HurtboxPos 0 0
+#8L
+HurtboxPos 0 0
+#8M
+HurtboxPos 0 0
+#8H
+HurtboxPos 0 0
+#Standing
+HurtboxPos 0 0
+#Crouching 
+HurtboxPos 0 0
+#Jumping
+HurtboxPos 0 0
+
+#########################################################################
+
+#HurtboxSize
+
+#5L
+HurtboxSize 0 0
+#5M
+HurtboxSize 0 0
+#5H
+HurtboxSize 0 0
+#2L
+HurtboxSize 0 0
+#2M
+HurtboxSize 0 0
+#2H
+HurtboxSize 0 0
+#6L
+HurtboxSize 0 0
+#6M
+HurtboxSize 0 0
+#6H
+HurtboxSize 0 0
+#8L
+HurtboxSize 0 0
+#8M
+HurtboxSize 0 0
+#8H
+HurtboxSize 0 0
+#Standing
+HurtboxSize 0 0
+#Crouching 
+HurtboxSize 0 0
+#Jumping
+HurtboxSize 0 0
+
+#########################################################################
+
+#Stats  Health	JumpHeight   Pushbox
+Stats	 320       650       180 300

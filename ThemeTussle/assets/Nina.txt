@@ -1,0 +1,151 @@
+#Nina 
+
+#Animations 
+
+#DefaultAnimations
+DefaultAnimations NDefault NCrouchDefault NJumpDefault NIdle NWalkF NWalkB	
+
+#StandingHits
+StandingHits  N5L N5M N5H
+
+#CrouchingHits	       
+CrouchingHits N2L N2M N2H
+
+#JumpingHits
+JumpingHits N8L N8M N8H	
+
+#ForwardHits
+ForwardHits N6L N6M N6H
+
+#########################################################################
+
+#HitboxPos
+
+#5L
+HitboxPos 60 -30
+#5M
+HitboxPos 60 90
+#5H
+HitboxPos 30 -30
+#2L
+HitboxPos 60 30
+#2M
+HitboxPos 50 130
+#2H
+HitboxPos 40 0
+#6L
+HitboxPos 30 -60
+#6M
+HitboxPos 70 -30
+#6H
+HitboxPos 30 -30
+#8L
+HitboxPos 70 0
+#8M
+HitboxPos 50 40
+#8H
+HitboxPos 15 15
+
+#########################################################################
+
+#HitboxSize
+
+#5L
+HitboxSize 100 50
+#5M
+HitboxSize 100 70
+#5H
+HitboxSize 150 100
+#2L
+HitboxSize 90 50
+#2M
+HitboxSize 130 55
+#2H
+HitboxSize 120 90
+#6L
+HitboxSize 160 145
+#6M
+HitboxSize 105 80
+#6H
+HitboxSize 140 150
+#8L
+HitboxSize 60 65
+#8M
+HitboxSize 70 70
+#8H
+HitboxSize 90 105
+
+#########################################################################
+
+#HurtboxPos
+
+#5L
+HurtboxPos -40 0
+#5M
+HurtboxPos -40 0
+#5H
+HurtboxPos -40 0
+#2L
+HurtboxPos -15 20
+#2M
+HurtboxPos -15 20
+#2H
+HurtboxPos -15 20
+#6L
+HurtboxPos -40 70
+#6M
+HurtboxPos -40 0
+#6H
+HurtboxPos -40 0
+#8L
+HurtboxPos 0 0
+#8M
+HurtboxPos 0 0
+#8H
+HurtboxPos 0 0
+#Standing
+HurtboxPos -40 0
+#Crouching 
+HurtboxPos -15 20
+#Jumping
+HurtboxPos 0 0
+
+#########################################################################
+
+#HurtboxSize
+
+#5L
+HurtboxSize 160 370
+#5M
+HurtboxSize 160 370
+#5H
+HurtboxSize 160 370
+#2L
+HurtboxSize 160 300
+#2M
+HurtboxSize 160 300
+#2H
+HurtboxSize 160 370
+#6L
+HurtboxSize 160 180
+#6M
+HurtboxSize 160 370
+#6H
+HurtboxSize 160 370
+#8L
+HurtboxSize 160 300
+#8M
+HurtboxSize 160 300
+#8H
+HurtboxSize 160 300
+#Standing
+HurtboxSize 160 370
+#Crouching 
+HurtboxSize 160 300
+#Jumping
+HurtboxSize 160 300
+
+#########################################################################
+
+#Stats  Health	JumpHeight   Pushbox
+Stats	 400       600       50  250
