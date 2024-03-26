@@ -3,7 +3,7 @@
 #Animations 
 
 #DefaultAnimations
-DefaultAnimations NDefault NCrouchDefault NJumpDefault NIdle NWalkF NWalkB	
+DefaultAnimations NDefault NCrouchDefault NJumpDefault NIdle NWalkF NWalkB NHit	
 
 #StandingHits
 StandingHits  N5L N5M N5H

@@ -1010,6 +1010,69 @@
 			}
 		},
 		{
+			"filename": "NHit (1).png",
+			"frame": {
+				"x": 1025,
+				"y": 3190,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "NHit (2).png",
+			"frame": {
+				"x": 1310,
+				"y": 3190,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
+			"filename": "NHit (3).png",
+			"frame": {
+				"x": 1625,
+				"y": 3190,
+				"w": 220,
+				"h": 400
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 220,
+				"h": 400
+			},
+			"sourceSize": {
+				"w": 220,
+				"h": 400
+			}
+		},
+		{
 			"filename": "SDefault.png",
 			"frame": {
 				"x": 1320,

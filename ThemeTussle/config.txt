@@ -77,7 +77,7 @@ Animation       NJumpDefault     Nina    0        no
 Animation       NIdle        	Nina    4        no
 Animation       NWalkF	        Nina    4        yes
 Animation       NWalkB	        Nina    4        yes
-Animation       NHit		Nina    4        no
+Animation       NHit	        Nina    4        no
 Animation       N5M	        Nina    3        no
 Animation       N5L	        Nina    4        no
 Animation       N5H	        Nina    4        no

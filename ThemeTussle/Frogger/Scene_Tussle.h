@@ -25,6 +25,7 @@ private:
 
     bool            m_playerCanJump{ true };
     bool            m_playerCanMove{ true };
+    bool            m_playerCanBeHit{ true };
     bool            m_playerHoldingDown{ false };
     bool			m_playerHasJumped{ false };
     int             m_playerHP{ 400 };
@@ -33,10 +34,13 @@ private:
     sf::Vector2f    m_playerPushbox{ 100, 100 };
     sf::Time        m_playerIdleTime = sf::seconds(10);
     sf::Vector2f    m_playerCurrentPushPos{ -30, 0 };
-    sf::Time        m_playerHurtTimer = sf::seconds(0);
+    
+    int             m_hitComboNumber = { 0 };
+    int             m_comboNumberChecker = { 0 };
 
     bool            m_enemyCanJump{ true };
     bool            m_enemyCanMove{ true };
+    bool            m_enemyCanBeHit{ true };
     bool            m_enemyHoldingDown{ false };
     bool			m_enemyHasJumped{ false };
     int             m_enemyHP{ 400 };
@@ -45,7 +49,6 @@ private:
     sf::Vector2f    m_enemyPushbox{ 100, 100 };
     sf::Time        m_enemyIdleTime = sf::seconds(10);
     sf::Vector2f    m_enemyCurrentPushPos{ -30, 0 };
-    sf::Time        m_enemyHurtTimer = sf::seconds(0);
 
     float           m_gravity{ 10 };
     int             m_speed{ 10 };
@@ -123,7 +126,11 @@ private:
     void            checkEnemyState();
     void	        registerActions();
     void            spawnPlayer();
-    void            stateCheck(sPtrEntt character, std::string state, std::string animation,
+
+    void            statePlayerCheck(std::string state, std::string animation,
+        sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos);
+
+    void            stateEnemyCheck(std::string state, std::string animation,
         sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos);
 
     void            stateCheckNohitBox(sPtrEntt character, std::string state, std::string animation,
