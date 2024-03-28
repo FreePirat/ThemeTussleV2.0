@@ -33,10 +33,13 @@ private:
     int             m_playerJumpHeight{ 600 };
     sf::Vector2f    m_playerPushbox{ 100, 100 };
     sf::Time        m_playerIdleTime = sf::seconds(10);
+    sf::Time        m_pRecovery = sf::seconds(0);
     sf::Vector2f    m_playerCurrentPushPos{ -30, 0 };
     
     int             m_hitComboNumber = { 0 };
     int             m_comboNumberChecker = { 0 };
+    bool            m_pmoveHasEnded = { true };
+    bool            m_emoveHasEnded = { true };
 
     bool            m_enemyCanJump{ true };
     bool            m_enemyCanMove{ true };
@@ -48,6 +51,7 @@ private:
     int             m_enemyJumpHeight{ 600 };
     sf::Vector2f    m_enemyPushbox{ 100, 100 };
     sf::Time        m_enemyIdleTime = sf::seconds(10);
+    sf::Time        m_eRecovery = sf::seconds(0);
     sf::Vector2f    m_enemyCurrentPushPos{ -30, 0 };
 
     float           m_gravity{ 10 };
@@ -111,6 +115,12 @@ private:
     std::vector<sf::Vector2f>	m_enemyHurtboxPos;
     std::vector<sf::Vector2f>	m_enemyHurtboxSize;
 
+    std::vector<int>   m_playerDamge;
+    std::vector<int>   m_enemyDamge;
+
+    int m_playerCurAttack;
+    int m_enemyCurAttack;
+
     //systems
     void            sMovement(sf::Time dt);
     void            sCollisions();
@@ -128,10 +138,10 @@ private:
     void            spawnPlayer();
 
     void            statePlayerCheck(std::string state, std::string animation,
-        sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos);
+        sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos, int damage);
 
     void            stateEnemyCheck(std::string state, std::string animation,
-        sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos);
+        sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos, int damage);
 
     void            stateCheckNohitBox(sPtrEntt character, std::string state, std::string animation,
         sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f playerPos);

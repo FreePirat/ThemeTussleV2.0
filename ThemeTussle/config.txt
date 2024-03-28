@@ -36,6 +36,7 @@ Texture CSLeoSelected	../assets/Textures/CSLeo_Selected.png
 Texture CSCharlie	../assets/Textures/CSCharlie.png
 Texture CSCharlieSelected ../assets/Textures/CSCharlie_Selected.png
 Texture NinaHealthbar ../assets/Textures/NinaHealthbar.png
+Texture Timer		../assets/Textures/Timer.png
 
 # Sprites
 Sprite Background       Background   0 0  1920 1080
@@ -62,6 +63,8 @@ Sprite CSLeo		CSLeo	0  0  200 200
 Sprite CSLeoSelected	CSLeoSelected	0  0  200 200
 Sprite CSCharlie	CSCharlie	0  0  200 200
 Sprite CSCharlieSelected CSCharlieSelected	0  0  200 200
+Sprite NinaHealthbar	NinaHealthbar 0 0 200 200
+Sprite Timer		Timer	0  0  200 200
 
 #
 # SOUNDS

@@ -80,11 +80,11 @@ HitboxSize 90 105
 #HurtboxPos
 
 #5L
-HurtboxPos -40 0
+HurtboxPos -30 0
 #5M
-HurtboxPos -40 0
+HurtboxPos -30 0
 #5H
-HurtboxPos -40 0
+HurtboxPos -30 0
 #2L
 HurtboxPos -15 20
 #2M
@@ -92,11 +92,11 @@ HurtboxPos -15 20
 #2H
 HurtboxPos -15 20
 #6L
-HurtboxPos -40 70
+HurtboxPos -30 70
 #6M
-HurtboxPos -40 0
+HurtboxPos -30 0
 #6H
-HurtboxPos -40 0
+HurtboxPos -30 0
 #8L
 HurtboxPos 0 0
 #8M
@@ -104,7 +104,7 @@ HurtboxPos 0 0
 #8H
 HurtboxPos 0 0
 #Standing
-HurtboxPos -40 0
+HurtboxPos -30 0
 #Crouching 
 HurtboxPos -15 20
 #Jumping
@@ -148,4 +148,21 @@ HurtboxSize 160 300
 #########################################################################
 
 #Stats  Health	JumpHeight   Pushbox
-Stats	 400       600       50  250
+Stats	 400       600       100  250
+
+#Healthbar
+Healthbar NinaHealthbar
+
+#AttackDMG
+Damage 20 
+Damage 38
+Damage 45
+Damage 18
+Damage 30
+Damage 36
+Damage 28
+Damage 35
+Damage 50
+Damage 20
+Damage 24
+Damage 38

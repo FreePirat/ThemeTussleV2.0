@@ -127,30 +127,44 @@ void Scene_Tussle::playerMovement() {
     auto& playerSide = m_player->getComponent<CSide>().side;
     auto& enemySide = m_enemy->getComponent<CSide>().side;
 
-    if (playerSide == "left") {
-        m_player->getComponent<CTransform>().scale = { 1.f, 1.f };
-    }
-    else {
-        m_player->getComponent<CTransform>().scale = { -1.f, 1.f };
-    }
+    //if (playerSide == "left") {
+    //    m_player->addComponent<CTransform>() = playerPos, playerPos, (2.f, 2.f);
+    //}
+    //else {
+    //    m_player->addComponent<CTransform>() = playerPos, playerPos,(-2.f, 2.f);
+    //}
+
+    //if (enemySide == "left") {
+    //    m_enemy->addComponent<CTransform>() = enemyPos, enemyPos,(2.f, 2.f);
+    //}
+    //else {
+    //    m_enemy->addComponent<CTransform>() = enemyPos, enemyPos,(2.f, 2.f);
+    //}
 
     auto overlap = Physics::getOverlap(m_player, m_enemy);
 
     playerVel.x = 0.f;
     enemyVel.x = 0.f;
     
-    if (playerInput.LEFT)
-        playerVel.x -= 40;
+    if (playerInput.LEFT && !playerInput.DOWN) {
+        if (playerSide == "left") { playerVel.x -= 30; }
+        else{ playerVel.x -= 55; }
+    }
 
-    if (enemyInput.LEFT2)
-        enemyVel.x -= 40;
+    if (enemyInput.LEFT2 && !enemyInput.DOWN2) {
+        if (enemySide == "left") { enemyVel.x -= 30; }
+        else { enemyVel.x -= 55; }
+    }
     
+    if (playerInput.RIGHT && !playerInput.DOWN) {
+        if (playerSide == "right") { playerVel.x += 30; }
+        else { playerVel.x += 55; }
+    }
 
-    if (playerInput.RIGHT)
-        playerVel.x += 55;
-
-    if (enemyInput.RIGHT2)
-        enemyVel.x += 55;
+    if (enemyInput.RIGHT2 && !enemyInput.DOWN2) {
+        if (enemySide == "right") { enemyVel.x += 30; }
+        else { enemyVel.x += 55; }
+    }
 
     if (playerInput.UP) {
         playerInput.UP = false;
@@ -214,13 +228,31 @@ void Scene_Tussle::playerMovement() {
 void Scene_Tussle::sRender() {
     m_game->window().setView(m_worldView);
 
-    sf::Text playerLives("Player 1 Health: " + std::to_string(m_playerHP), Assets::getInstance().getFont("main"));
-    playerLives.setPosition(5, 20);
-    sf::Text enemyLives("Enemy Health: " + std::to_string(m_enemyHP), Assets::getInstance().getFont("main"));
-    enemyLives.setPosition(1605, 20);
     int currentTime = m_time.asSeconds();
-    sf::Text time("Time: " + std::to_string(currentTime), Assets::getInstance().getFont("main"));
-    time.setPosition(805, 20);
+    sf::Text time(std::to_string(currentTime), Assets::getInstance().getFont("main"));
+    time.setPosition(880, 135);
+
+    sf::RectangleShape playerHP(sf::Vector2f(m_playerHP, 50.f));
+    playerHP.setPosition(150.f, 50.f);
+    playerHP.setFillColor(sf::Color::Yellow);
+
+    sf::RectangleShape playerBehind(sf::Vector2f(410, 60.f));
+    playerBehind.setPosition(145.f, 45.f);
+    playerBehind.setFillColor(sf::Color::Black);
+
+    sf::RectangleShape enemyHP(sf::Vector2f(m_enemyHP, 50.f));
+    enemyHP.setPosition(1450.f, 50.f);
+    enemyHP.setFillColor(sf::Color::Yellow);
+
+    sf::RectangleShape enemyBehind(sf::Vector2f(410, 60.f));
+    enemyBehind.setPosition(1445.f, 45.f);
+    enemyBehind.setFillColor(sf::Color::Black);
+
+    auto e = m_entityManager.addEntity("timer");
+
+    auto& sprite = e->addComponent<CSprite>(Assets::getInstance().getTexture("Timer")).sprite;
+    sprite.setOrigin(0.f, 0.f);
+    sprite.setPosition(800, 0);
 
     // draw bkg first
     for (auto e: m_entityManager.getEntities("bkg")) {
@@ -230,11 +262,36 @@ void Scene_Tussle::sRender() {
             else { sprite.setColor(sf::Color(255, 255, 255)); }
             m_game->window().draw(sprite);
         }
-        m_game->window().draw(playerLives);
-        m_game->window().draw(enemyLives);       
-        m_game->window().draw(time);
     }
 
+    for (auto e : m_entityManager.getEntities("timer")) {
+        if (e->getComponent<CSprite>().has) {
+            auto& sprite = e->getComponent<CSprite>().sprite;
+            m_game->window().draw(sprite);
+            m_game->window().draw(time);
+        }
+    }
+
+    for (auto e : m_entityManager.getEntities("PlayerHealthbar")) {
+        if (e->getComponent<CSprite>().has) {
+            auto& sprite = e->getComponent<CSprite>().sprite;
+            m_game->window().draw(sprite);
+            m_game->window().draw(time);
+        }
+        m_game->window().draw(playerBehind);
+        m_game->window().draw(playerHP);
+    }
+
+    for (auto e : m_entityManager.getEntities("EnemyHealthbar")) {
+        if (e->getComponent<CSprite>().has) {
+            auto& sprite = e->getComponent<CSprite>().sprite;
+            m_game->window().draw(sprite);
+            m_game->window().draw(time);
+        }
+        m_game->window().draw(enemyBehind);
+        m_game->window().draw(enemyHP);
+    }
+    
     for (auto&e: m_entityManager.getEntities()) {
         if (!e->hasComponent<CAnimation>())
             continue;
@@ -322,19 +379,17 @@ void Scene_Tussle::sDoAction(const Command&action) {
             else if (action.name() == "DOWN" && m_playerCanJump) {
                 m_player->getComponent<CInput>().DOWN = true;
                 m_player->addComponent<CState>("2");
-                m_player->getComponent<CInput>().LEFT = false;
-                m_player->getComponent<CInput>().RIGHT = false;
             }
 
             //This denies being able to crouch while walking.
-            else if (action.name() == "LEFT" && !m_player->getComponent<CInput>().DOWN) {
+            else if (action.name() == "LEFT") {
                 m_player->getComponent<CInput>().LEFT = true;
-                if (m_playerCanJump) { m_player->addComponent<CState>("4"); }
+                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) { m_player->addComponent<CState>("4"); }
             }
 
-            else if (action.name() == "RIGHT" && !m_player->getComponent<CInput>().DOWN) {
+            else if (action.name() == "RIGHT") {
                 m_player->getComponent<CInput>().RIGHT = true;
-                if (m_playerCanJump) { m_player->addComponent<CState>("6"); }
+                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) { m_player->addComponent<CState>("6"); }
             }
 
             //LIGHT ATTACKS
@@ -392,18 +447,16 @@ void Scene_Tussle::sDoAction(const Command&action) {
             else if (action.name() == "DOWN2" && m_enemyCanJump) {
                 m_enemy->getComponent<CInput>().DOWN2 = true;
                 m_enemy->addComponent<CState>("2");
-                m_enemy->getComponent<CInput>().LEFT2 = false;
-                m_enemy->getComponent<CInput>().RIGHT2 = false;
             }
 
-            else if (action.name() == "LEFT2" && !m_enemy->getComponent<CInput>().DOWN2) {
+            else if (action.name() == "LEFT2") {
                 m_enemy->getComponent<CInput>().LEFT2 = true;
-                if (m_enemyCanJump) { m_enemy->addComponent<CState>("4"); }
+                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) { m_enemy->addComponent<CState>("4"); }
             }
 
-            else if (action.name() == "RIGHT2" && !m_enemy->getComponent<CInput>().DOWN2) {
+            else if (action.name() == "RIGHT2") {
                 m_enemy->getComponent<CInput>().RIGHT2 = true;
-                if (m_enemyCanJump) { m_enemy->addComponent<CState>("6"); }
+                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) { m_enemy->addComponent<CState>("6"); }
             }
 
             else if (action.name() == "LIGHT2") {
@@ -455,7 +508,6 @@ void Scene_Tussle::sDoAction(const Command&action) {
             m_player->getComponent<CInput>().DOWN = false;
             m_player->addComponent<CState>("5"); 
             m_playerCanMove = true;
-            m_playerCanBeHit = true; 
         }
 
         //ENEMY
@@ -466,7 +518,6 @@ void Scene_Tussle::sDoAction(const Command&action) {
             m_enemy->getComponent<CInput>().DOWN2 = false;
             m_enemy->addComponent<CState>("5");
             m_enemyCanMove = true;
-            m_enemyCanBeHit = true;
         }
     }
 }
@@ -546,17 +597,27 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
         m_enemy->addComponent<CSide>("right");
     }
 
-    int playerIdleTimer = m_playerIdleTime.asSeconds();
-    if (playerIdleTimer != 0) {
+    if (m_playerIdleTime.asSeconds() != 0) {
         m_playerIdleTime -= dt;
     }
     else { m_player->addComponent<CState>("idleTimeout"); }
 
-    int enemyIdleTimer = m_enemyIdleTime.asSeconds();
-    if (enemyIdleTimer != 0) {
+    if (m_enemyIdleTime.asSeconds() != 0) {
         m_enemyIdleTime -= dt;
     }
     else { m_enemy->addComponent<CState>("idleTimeout"); }
+
+    if (m_pRecovery.asSeconds() > 0) {
+        m_pRecovery -= dt;
+        m_player->removeComponent<CHurtBox>();
+    }
+    else { m_playerCanBeHit = true; }
+
+    if (m_eRecovery.asSeconds() > 0) {
+        m_eRecovery -= dt;
+        m_enemy->removeComponent<CHurtBox>();
+    }
+    else { m_enemyCanBeHit = true; }
 
     m_time -= dt;
 
@@ -595,22 +656,19 @@ void Scene_Tussle::sAnimation(sf::Time dt) {
             for (auto player : m_entityManager.getEntities("player")) {
                 if (playerAnim.animation.hasEnded()) {
                     if (playerState == "2L" || playerState == "2M" || playerState == "2H") {
-                        m_playerCanMove = true;
+                        if (playerState == "STUN") { m_pRecovery = sf::seconds(1); }
                         m_player->addComponent<CState>("2");
                     }
                     else if (!m_playerCanJump) {
-                        m_playerCanMove = true;
+                        if (playerState == "STUN") { m_pRecovery = sf::seconds(1); }
                         m_player->addComponent<CState>("8");
                     }
-                    else if (m_player->getComponent<CState>().state == "STUN") {
-                        m_playerCanMove = true;
-                        m_playerCanBeHit = true;
-                        m_player->addComponent<CState>("5");
-                    }
                     else {
-                        m_playerCanMove = true;
-                        m_player->addComponent<CState>("5");
+                        if(playerState == "STUN"){ m_pRecovery = sf::seconds(1); }
+                        m_player->addComponent<CState>("5");                      
                     }
+                    m_pmoveHasEnded = true;
+                    m_playerCanMove = true;
                 }
             }
 
@@ -620,22 +678,20 @@ void Scene_Tussle::sAnimation(sf::Time dt) {
             for (auto enemy : m_entityManager.getEntities("enemy")) {
                 if (enemyAnim.animation.hasEnded()) {
                     if (enemyState == "2L" || enemyState == "2M" || enemyState == "2H") {
-                        m_enemyCanMove = true;
+                        if (enemyState == "STUN") { m_eRecovery = sf::seconds(1); }
                         m_enemy->addComponent<CState>("2");
                     }
                     else if (!m_enemyCanJump) {
-                        m_enemyCanMove = true;
+                        if (enemyState == "STUN") { m_eRecovery = sf::seconds(1); }
                         m_enemy->addComponent<CState>("8");
                     }
-                    else if (m_enemy->getComponent<CState>().state == "STUN") {
-                        m_enemyCanMove = true;
-                        m_enemyCanBeHit = true;
-                        m_enemy->addComponent<CState>("5");
-                    }
                     else {
-                        m_enemyCanMove = true;
+                        if (enemyState == "STUN") { m_eRecovery = sf::seconds(1); }
                         m_enemy->addComponent<CState>("5");
                     }
+
+                    m_enemyCanMove = true;
+                    m_emoveHasEnded = true;
                 }
             }
         }
@@ -673,6 +729,7 @@ void Scene_Tussle::adjustPlayerPosition() {
 void Scene_Tussle::checkEnemyState() {
 
     auto enemyPos = m_enemy->getComponent<CTransform>().pos;
+    auto enemySide = m_enemy->getComponent<CSide>().side;
     auto enemyState = m_enemy->getComponent<CState>().state;
     auto enemyAnimName = m_enemy->getComponent<CAnimation>().animation.getName();
 
@@ -680,34 +737,49 @@ void Scene_Tussle::checkEnemyState() {
     stateCheckNohitBox(m_enemy, "6", m_WalkForward2, m_enemyHurtboxSize[12], m_enemyHurtboxPos[12], enemyPos);
     stateCheckNohitBox(m_enemy, "4", m_WalkBackwards2, m_enemyHurtboxSize[12], m_enemyHurtboxPos[12], enemyPos);
     stateCheckNohitBox(m_enemy, "8", m_Jump2, m_enemyHurtboxSize[14], m_enemyHurtboxPos[14], enemyPos);
-    
+
+    if (enemyState == "5") {
+        m_enemyCanMove = true;
+    }
 
     if (m_enemyCanJump && m_enemy->getComponent<CInput>().DOWN2 == true) {
         stateCheckNohitBox(m_enemy, "2", m_Crouch2, m_enemyHurtboxSize[13], m_enemyHurtboxPos[13], enemyPos);
     }
 
-    stateEnemyCheck("2L", m_2L2, m_enemyHurtboxSize[3], m_enemyHurtboxPos[3], m_enemyHitboxSize[3], m_enemyHitboxPos[3], enemyPos);
-    stateEnemyCheck("2M", m_2M2, m_enemyHurtboxSize[4], m_enemyHurtboxPos[4], m_enemyHitboxSize[4], m_enemyHitboxPos[4], enemyPos);
-    stateEnemyCheck("2H", m_2H2, m_enemyHurtboxSize[5], m_enemyHurtboxPos[5], m_enemyHitboxSize[5], m_enemyHitboxPos[5], enemyPos);
+    if (m_enemy->getComponent<CInput>().RIGHT2 == true && enemySide == "right") {
+        m_enemy->removeComponent<CHurtBox>();
+    }
 
-    stateEnemyCheck("8L", m_8L2, m_enemyHurtboxSize[9], m_enemyHurtboxPos[9], m_enemyHitboxSize[9], m_enemyHitboxPos[9], enemyPos);
-    stateEnemyCheck("8M", m_8M2, m_enemyHurtboxSize[10], m_enemyHurtboxPos[10], m_enemyHitboxSize[10], m_enemyHitboxPos[10], enemyPos);
-    stateEnemyCheck("8H", m_8H2, m_enemyHurtboxSize[11], m_enemyHurtboxPos[11], m_enemyHitboxSize[11], m_enemyHitboxPos[11], enemyPos);
+    if (m_enemy->getComponent<CInput>().LEFT2 == true && enemySide == "left") {
+        m_enemy->removeComponent<CHurtBox>();
+    }
 
-    stateEnemyCheck("6L", m_6L2, m_enemyHurtboxSize[6], m_enemyHurtboxPos[6], m_enemyHitboxSize[6], m_enemyHitboxPos[6], enemyPos);
-    stateEnemyCheck("6M", m_6M2, m_enemyHurtboxSize[7], m_enemyHurtboxPos[7], m_enemyHitboxSize[7], m_enemyHitboxPos[7], enemyPos);
-    stateEnemyCheck("6H", m_6H2, m_enemyHurtboxSize[8], m_enemyHurtboxPos[8], m_enemyHitboxSize[8], m_enemyHitboxPos[8], enemyPos);
+    stateEnemyCheck("2L", m_2L2, m_enemyHurtboxSize[3], m_enemyHurtboxPos[3], m_enemyHitboxSize[3], m_enemyHitboxPos[3], enemyPos, m_enemyDamge[3]);
+    stateEnemyCheck("2M", m_2M2, m_enemyHurtboxSize[4], m_enemyHurtboxPos[4], m_enemyHitboxSize[4], m_enemyHitboxPos[4], enemyPos, m_enemyDamge[4]);
+    stateEnemyCheck("2H", m_2H2, m_enemyHurtboxSize[5], m_enemyHurtboxPos[5], m_enemyHitboxSize[5], m_enemyHitboxPos[5], enemyPos, m_enemyDamge[5]);
 
-    stateEnemyCheck("5L", m_5L2, m_enemyHurtboxSize[0], m_enemyHurtboxPos[0], m_enemyHitboxSize[0], m_enemyHitboxPos[0], enemyPos);
-    stateEnemyCheck("5M", m_5M2, m_enemyHurtboxSize[1], m_enemyHurtboxPos[1], m_enemyHitboxSize[1], m_enemyHitboxPos[1], enemyPos);
-    stateEnemyCheck("5H", m_5H2, m_enemyHurtboxSize[2], m_enemyHurtboxPos[2], m_enemyHitboxSize[2], m_enemyHitboxPos[2], enemyPos);
+    stateEnemyCheck("8L", m_8L2, m_enemyHurtboxSize[9], m_enemyHurtboxPos[9], m_enemyHitboxSize[9], m_enemyHitboxPos[9], enemyPos, m_enemyDamge[9]);
+    stateEnemyCheck("8M", m_8M2, m_enemyHurtboxSize[10], m_enemyHurtboxPos[10], m_enemyHitboxSize[10], m_enemyHitboxPos[10], enemyPos, m_enemyDamge[10]);
+    stateEnemyCheck("8H", m_8H2, m_enemyHurtboxSize[11], m_enemyHurtboxPos[11], m_enemyHitboxSize[11], m_enemyHitboxPos[11], enemyPos, m_enemyDamge[11]);
 
+    stateEnemyCheck("6L", m_6L2, m_enemyHurtboxSize[6], m_enemyHurtboxPos[6], m_enemyHitboxSize[6], m_enemyHitboxPos[6], enemyPos, m_enemyDamge[6]);
+    stateEnemyCheck("6M", m_6M2, m_enemyHurtboxSize[7], m_enemyHurtboxPos[7], m_enemyHitboxSize[7], m_enemyHitboxPos[7], enemyPos, m_enemyDamge[7]);
+    stateEnemyCheck("6H", m_6H2, m_enemyHurtboxSize[8], m_enemyHurtboxPos[8], m_enemyHitboxSize[8], m_enemyHitboxPos[8], enemyPos, m_enemyDamge[8]);
+
+    stateEnemyCheck("5L", m_5L2, m_enemyHurtboxSize[0], m_enemyHurtboxPos[0], m_enemyHitboxSize[0], m_enemyHitboxPos[0], enemyPos, m_enemyDamge[0]);
+    stateEnemyCheck("5M", m_5M2, m_enemyHurtboxSize[1], m_enemyHurtboxPos[1], m_enemyHitboxSize[1], m_enemyHitboxPos[1], enemyPos, m_enemyDamge[1]);
+    stateEnemyCheck("5H", m_5H2, m_enemyHurtboxSize[2], m_enemyHurtboxPos[2], m_enemyHitboxSize[2], m_enemyHitboxPos[2], enemyPos, m_enemyDamge[2]);
+
+    if (enemyState == "STUN") {
+        m_enemyCanMove = false;
+        m_enemyCanBeHit = false;
+        m_enemy->getComponent<CInput>().LEFT2 = false;
+        m_enemy->getComponent<CInput>().RIGHT2 = false;
+    }
     stateCheckNohitBox(m_enemy, "STUN", m_Hit2, m_enemyHurtboxSize[12], m_enemyHurtboxPos[12], enemyPos);
 
     if (enemyState == "HIT" && m_enemyCanBeHit) {
-        m_enemyCanMove = false;
-        m_enemyCanBeHit = false;
-        m_enemyHP -= 5;
+        m_enemyHP -= m_playerCurAttack;
         m_enemy->addComponent<CState>("STUN");
     }
 
@@ -723,6 +795,7 @@ void Scene_Tussle::checkEnemyState() {
 void Scene_Tussle::checkPlayerState() {
 
     auto playerPos = m_player->getComponent<CTransform>().pos;
+    auto playerSide = m_player->getComponent<CSide>().side;
     auto playerState = m_player->getComponent<CState>().state;
     auto playerAnimName = m_player->getComponent<CAnimation>().animation.getName();
 
@@ -731,35 +804,50 @@ void Scene_Tussle::checkPlayerState() {
     stateCheckNohitBox(m_player, "4", m_WalkBackwards, m_playerHurtboxSize[12], m_playerHurtboxPos[12], playerPos);
     stateCheckNohitBox(m_player, "8", m_Jump, m_playerHurtboxSize[14], m_playerHurtboxPos[14], playerPos);
 
+    if (playerState == "5") {
+        m_enemyCanMove = true;
+    }
 
     if (m_playerCanJump && m_player->getComponent<CInput>().DOWN == true) {
         stateCheckNohitBox(m_player, "2", m_Crouch2, m_playerHurtboxSize[13], m_playerHurtboxPos[13], playerPos);
     }
 
-    statePlayerCheck("2L", m_2L, m_playerHurtboxSize[3], m_playerHurtboxPos[3], m_playerHitboxSize[3], m_playerHitboxPos[3], playerPos);
-    statePlayerCheck("2M", m_2M, m_playerHurtboxSize[4], m_playerHurtboxPos[4], m_playerHitboxSize[4], m_playerHitboxPos[4], playerPos);
-    statePlayerCheck("2H", m_2H, m_playerHurtboxSize[5], m_playerHurtboxPos[5], m_playerHitboxSize[5], m_playerHitboxPos[5], playerPos);
+    if (m_player->getComponent<CInput>().RIGHT == true && playerSide == "right") {
+        m_player->removeComponent<CHurtBox>();
+    }
 
-    statePlayerCheck("8L", m_8L, m_playerHurtboxSize[9], m_playerHurtboxPos[9], m_playerHitboxSize[9], m_playerHitboxPos[9], playerPos);
-    statePlayerCheck("8M", m_8M, m_playerHurtboxSize[10], m_playerHurtboxPos[10], m_playerHitboxSize[10], m_playerHitboxPos[10], playerPos);
-    statePlayerCheck("8H", m_8H, m_playerHurtboxSize[11], m_playerHurtboxPos[11], m_playerHitboxSize[11], m_playerHitboxPos[11], playerPos);
+    if (m_player->getComponent<CInput>().LEFT == true && playerSide == "left") {
+        m_player->removeComponent<CHurtBox>();
+    }
 
-    statePlayerCheck("6L", m_6L, m_playerHurtboxSize[6], m_playerHurtboxPos[6], m_playerHitboxSize[6], m_playerHitboxPos[6], playerPos);
-    statePlayerCheck("6M", m_6M, m_playerHurtboxSize[7], m_playerHurtboxPos[7], m_playerHitboxSize[7], m_playerHitboxPos[7], playerPos);
-    statePlayerCheck("6H", m_6H, m_playerHurtboxSize[8], m_playerHurtboxPos[8], m_playerHitboxSize[8], m_playerHitboxPos[8], playerPos);
+    statePlayerCheck("2L", m_2L, m_playerHurtboxSize[3], m_playerHurtboxPos[3], m_playerHitboxSize[3], m_playerHitboxPos[3], playerPos, m_playerDamge[3]);
+    statePlayerCheck("2M", m_2M, m_playerHurtboxSize[4], m_playerHurtboxPos[4], m_playerHitboxSize[4], m_playerHitboxPos[4], playerPos, m_playerDamge[4]);
+    statePlayerCheck("2H", m_2H, m_playerHurtboxSize[5], m_playerHurtboxPos[5], m_playerHitboxSize[5], m_playerHitboxPos[5], playerPos, m_playerDamge[5]);
 
-    statePlayerCheck("5L", m_5L, m_playerHurtboxSize[0], m_playerHurtboxPos[0], m_playerHitboxSize[0], m_playerHitboxPos[0], playerPos);
-    statePlayerCheck("5M", m_5M, m_playerHurtboxSize[1], m_playerHurtboxPos[1], m_playerHitboxSize[1], m_playerHitboxPos[1], playerPos);
-    statePlayerCheck("5H", m_5H, m_playerHurtboxSize[2], m_playerHurtboxPos[2], m_playerHitboxSize[2], m_playerHitboxPos[2], playerPos);
+    statePlayerCheck("8L", m_8L, m_playerHurtboxSize[9], m_playerHurtboxPos[9], m_playerHitboxSize[9], m_playerHitboxPos[9], playerPos, m_playerDamge[9]);
+    statePlayerCheck("8M", m_8M, m_playerHurtboxSize[10], m_playerHurtboxPos[10], m_playerHitboxSize[10], m_playerHitboxPos[10], playerPos, m_playerDamge[10]);
+    statePlayerCheck("8H", m_8H, m_playerHurtboxSize[11], m_playerHurtboxPos[11], m_playerHitboxSize[11], m_playerHitboxPos[11], playerPos, m_playerDamge[11]);
 
-    stateCheckNohitBox(m_player, "STUN", m_Hit, m_playerHurtboxSize[12], m_playerHurtboxPos[12], playerPos);
+    statePlayerCheck("6L", m_6L, m_playerHurtboxSize[6], m_playerHurtboxPos[6], m_playerHitboxSize[6], m_playerHitboxPos[6], playerPos, m_playerDamge[6]);
+    statePlayerCheck("6M", m_6M, m_playerHurtboxSize[7], m_playerHurtboxPos[7], m_playerHitboxSize[7], m_playerHitboxPos[7], playerPos, m_playerDamge[7]);
+    statePlayerCheck("6H", m_6H, m_playerHurtboxSize[8], m_playerHurtboxPos[8], m_playerHitboxSize[8], m_playerHitboxPos[8], playerPos, m_playerDamge[8]);
+
+    statePlayerCheck("5L", m_5L, m_playerHurtboxSize[0], m_playerHurtboxPos[0], m_playerHitboxSize[0], m_playerHitboxPos[0], playerPos, m_playerDamge[0]);
+    statePlayerCheck("5M", m_5M, m_playerHurtboxSize[1], m_playerHurtboxPos[1], m_playerHitboxSize[1], m_playerHitboxPos[1], playerPos, m_playerDamge[1]);
+    statePlayerCheck("5H", m_5H, m_playerHurtboxSize[2], m_playerHurtboxPos[2], m_playerHitboxSize[2], m_playerHitboxPos[2], playerPos, m_playerDamge[2]);
 
     if (playerState == "HIT" && m_playerCanBeHit) {
-        m_playerCanMove = false;
-        m_playerCanBeHit = false;
-        m_playerHP -= 5;
+        m_playerHP -= m_enemyCurAttack;
         m_player->addComponent<CState>("STUN");
     }
+
+    if (playerState == "STUN") {
+        m_playerCanMove = false;
+        m_playerCanBeHit = false;
+        m_player->getComponent<CInput>().LEFT = false;
+        m_player->getComponent<CInput>().RIGHT = false;
+    }
+    stateCheckNohitBox(m_player, "STUN", m_Hit, m_playerHurtboxSize[12], m_playerHurtboxPos[12], playerPos);
 
     if (playerState == "idleTimeout" && playerAnimName != m_Idle) {
         m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(m_Idle));
@@ -771,7 +859,7 @@ void Scene_Tussle::checkPlayerState() {
 }
 
 void Scene_Tussle::statePlayerCheck(std::string state, std::string animation, 
-    sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos) {
+    sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos, int damage) {
 
     if (m_player->getComponent<CState>().state == state) {
         if (m_player->getComponent<CAnimation>().animation.getName() != animation) { m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animation)); }
@@ -779,17 +867,26 @@ void Scene_Tussle::statePlayerCheck(std::string state, std::string animation,
         m_player->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
             sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
 
-        m_player->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
-            sf::Vector2f(hitboxPos.x + playerPos.x, hitboxPos.y + playerPos.y));
+        if (m_player->getComponent<CSide>().side == "right") {
+            m_player->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
+                sf::Vector2f((hitboxPos.x * -2.5) + playerPos.x, hitboxPos.y + playerPos.y));
+        }
+        else {
+            m_player->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
+                sf::Vector2f(hitboxPos.x + playerPos.x, hitboxPos.y + playerPos.y));
+        }
 
-        m_playerCanMove = false;  
+        m_playerCurAttack = damage;
+
         m_player->getComponent<CInput>().LEFT = false;
         m_player->getComponent<CInput>().RIGHT = false;
+        m_playerCanMove = false;
+        m_pmoveHasEnded = false;
     }
 }
 
 void Scene_Tussle::stateEnemyCheck(std::string state, std::string animation,
-    sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos) {
+    sf::Vector2f hurtboxSize, sf::Vector2f hurtboxPos, sf::Vector2f hitboxSize, sf::Vector2f hitboxPos, sf::Vector2f playerPos, int damage) {
 
     if (m_enemy->getComponent<CState>().state == state) {
         if (m_enemy->getComponent<CAnimation>().animation.getName() != animation) { m_enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation(animation)); }
@@ -797,12 +894,21 @@ void Scene_Tussle::stateEnemyCheck(std::string state, std::string animation,
         m_enemy->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
             sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
 
-        m_enemy->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
-            sf::Vector2f(hitboxPos.x + playerPos.x, hitboxPos.y + playerPos.y));
+        if (m_enemy->getComponent<CSide>().side == "right") {
+            m_enemy->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
+                sf::Vector2f((hitboxPos.x * -2.5) + playerPos.x, hitboxPos.y + playerPos.y));
+        }
+        else {
+            m_enemy->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
+                sf::Vector2f(hitboxPos.x + playerPos.x, hitboxPos.y + playerPos.y));
+        }
 
-        m_enemyCanMove = false;
+        m_enemyCurAttack = damage;
+
         m_enemy->getComponent<CInput>().LEFT2 = false;
         m_enemy->getComponent<CInput>().RIGHT2 = false;
+        m_enemyCanMove = false;
+        m_emoveHasEnded = false;
     }
 }
 
@@ -899,6 +1005,22 @@ void Scene_Tussle::loadCharacter(const std::string& path) {
         else if (token == "Stats") {
             config >> m_playerHP >> m_playerJumpHeight >> m_playerPushbox.x >> m_playerPushbox.y;
         }
+        else if (token == "Healthbar") {
+            std::string healthbar;
+            config >> healthbar;
+
+            auto e = m_entityManager.addEntity("PlayerHealthbar");
+
+            auto& sprite = e->addComponent<CSprite>(Assets::getInstance().getTexture(healthbar)).sprite;
+            sprite.setScale(2.f, 2.f);
+            sprite.setOrigin(0.f, 0.f);
+            sprite.setPosition(0, 0);
+        }
+        else if (token == "Damage") {
+            int dmg;
+            config >> dmg;
+            m_playerDamge.push_back(dmg);
+        }
         else if (token[0] == '#') {
             std::cout << token << "\n";
         }
@@ -957,6 +1079,22 @@ void Scene_Tussle::loadEnemy(const std::string& path) {
         }
         else if (token == "Stats") {
             config >> m_enemyHP >> m_enemyJumpHeight >> m_enemyPushbox.x >> m_enemyPushbox.y;
+        }
+        else if (token == "Healthbar") {
+            std::string healthbar;
+            config >> healthbar;
+
+            auto e = m_entityManager.addEntity("EnemyHealthbar");
+
+            auto& sprite = e->addComponent<CSprite>(Assets::getInstance().getTexture(healthbar)).sprite;
+            sprite.setScale(2.f, 2.f);
+            sprite.setOrigin(0.f, 0.f);
+            sprite.setPosition(1300, 0);
+        }
+        else if (token == "Damage") {
+            int dmg;
+            config >> dmg;
+            m_enemyDamge.push_back(dmg);
         }
         else if (token[0] == '#') {
             std::cout << token << "\n";
