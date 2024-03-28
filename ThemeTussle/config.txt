@@ -37,6 +37,9 @@ Texture CSCharlie	../assets/Textures/CSCharlie.png
 Texture CSCharlieSelected ../assets/Textures/CSCharlie_Selected.png
 Texture NinaHealthbar ../assets/Textures/NinaHealthbar.png
 Texture Timer		../assets/Textures/Timer.png
+Texture WinnerStage	../assets/Textures/WinnerStage.png
+Texture NWin		../assets/Textures/NWin.png
+Texture NLose		../assets/Textures/NLose.png
 
 # Sprites
 Sprite Background       Background   0 0  1920 1080
@@ -65,6 +68,9 @@ Sprite CSCharlie	CSCharlie	0  0  200 200
 Sprite CSCharlieSelected CSCharlieSelected	0  0  200 200
 Sprite NinaHealthbar	NinaHealthbar 0 0 200 200
 Sprite Timer		Timer	0  0  200 200
+Sprite WinnerStage	WinnerStage 0 0 1920 1080
+Sprite NWin		NWin	0 0 200 200
+Sprite NLose		NLose 0 0 200 200
 
 #
 # SOUNDS
@@ -77,20 +83,21 @@ JSON                    ../assets/Textures/characterJSON.json
 Animation       NDefault         Nina    0        no
 Animation       NCrouchDefault   Nina    0        no
 Animation       NJumpDefault     Nina    0        no
-Animation       NIdle        	Nina    4        no
-Animation       NWalkF	        Nina    4        yes
-Animation       NWalkB	        Nina    4        yes
-Animation       NHit	        Nina    4        no
-Animation       N5M	        Nina    3        no
-Animation       N5L	        Nina    4        no
-Animation       N5H	        Nina    4        no
-Animation       N2L		Nina    4        no
-Animation       N2M		Nina    3        no
-Animation       N2H		Nina    4        no
-Animation       N8L		Nina    2        no
-Animation       N8M		Nina    2        no
-Animation       N8H		Nina    3        no
-Animation       N6L		Nina    3        no
-Animation       N6M		Nina    4        no
-Animation       N6H		Nina    4        no
+Animation       NWin		 Nina    0        no
+Animation       NIdle        	 Nina    4        no
+Animation       NWalkF	         Nina    4        yes
+Animation       NWalkB	         Nina    4        yes
+Animation       NHit	         Nina    4        no
+Animation       N5M	         Nina    3        no
+Animation       N5L	         Nina    4        no
+Animation       N5H	         Nina    4        no
+Animation       N2L		 Nina    4        no
+Animation       N2M		 Nina    3        no
+Animation       N2H		 Nina    4        no
+Animation       N8L		 Nina    2        no
+Animation       N8M		 Nina    2        no
+Animation       N8H		 Nina    3        no
+Animation       N6L		 Nina    3        no
+Animation       N6M		 Nina    4        no
+Animation       N6H		 Nina    4        no
 

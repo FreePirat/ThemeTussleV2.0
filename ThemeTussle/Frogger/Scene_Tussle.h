@@ -35,11 +35,13 @@ private:
     sf::Time        m_playerIdleTime = sf::seconds(10);
     sf::Time        m_pRecovery = sf::seconds(0);
     sf::Vector2f    m_playerCurrentPushPos{ -30, 0 };
-    
-    int             m_hitComboNumber = { 0 };
-    int             m_comboNumberChecker = { 0 };
     bool            m_pmoveHasEnded = { true };
     bool            m_emoveHasEnded = { true };
+
+    std::string     m_pWin;
+    std::string     m_pLose;
+    std::string     m_eWin;
+    std::string     m_eLose;
 
     bool            m_enemyCanJump{ true };
     bool            m_enemyCanMove{ true };

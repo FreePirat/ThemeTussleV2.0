@@ -8,6 +8,7 @@
 #include "MusicPlayer.h"
 #include "Assets.h"
 #include "SoundPlayer.h"
+#include "Scene_WinScreen.h"
 
 
 Scene_Tussle::Scene_Tussle(GameEngine* gameEngine, const std::string& characterPath, const std::string& enemyPath, const std::string& levelPath, const std::string& modePath)
@@ -32,15 +33,6 @@ void Scene_Tussle::init() {
 void Scene_Tussle::sMovement(sf::Time dt) {
     playerMovement();
 
-    //Move all objects
-    for (auto e: m_entityManager.getEntities()) {
-        if (e->hasComponent<CTransform>()) {
-            auto&tfm = e->getComponent<CTransform>();
-
-            tfm.pos += tfm.vel * dt.asSeconds();
-        }
-    }
-
     auto& playerPos = m_player->getComponent<CTransform>().pos;
     auto& playerVel = m_player->getComponent<CTransform>().vel;
 
@@ -48,6 +40,14 @@ void Scene_Tussle::sMovement(sf::Time dt) {
     auto& enemyVel = m_enemy->getComponent<CTransform>().vel;
 
     auto worldPos = m_worldView.getSize();
+
+    for (auto e: m_entityManager.getEntities()) {
+        if (e->hasComponent<CTransform>()) {
+            auto&tfm = e->getComponent<CTransform>();
+
+            tfm.pos += tfm.vel * dt.asSeconds();
+        }
+    }
 
     if (playerPos.y >= worldPos.y / 1.4) {
         playerVel.y = 0;
@@ -67,7 +67,6 @@ void Scene_Tussle::sMovement(sf::Time dt) {
     if (enemyPos.y >= worldPos.y / 1.4) {
         enemyVel.y = 0;
         m_enemyCanJump = true;
-        //On landing, give the player the idle stance
         if (m_enemyHasJumped) {
             m_enemy->addComponent<CState>("5");
             m_enemyHasJumped = false;
@@ -121,25 +120,17 @@ void Scene_Tussle::playerMovement() {
     auto& enemyPos = m_enemy->getComponent<CTransform>().pos;
     auto& enemyVel = m_enemy->getComponent<CTransform>().vel;
 
+    auto& playerTfm = m_player->getComponent<CTransform>();
+    auto& enemyTfm = m_player->getComponent<CTransform>();
+
     auto& playerInput = m_player->getComponent<CInput>();
     auto& enemyInput = m_enemy->getComponent<CInput>();
 
     auto& playerSide = m_player->getComponent<CSide>().side;
     auto& enemySide = m_enemy->getComponent<CSide>().side;
 
-    //if (playerSide == "left") {
-    //    m_player->addComponent<CTransform>() = playerPos, playerPos, (2.f, 2.f);
-    //}
-    //else {
-    //    m_player->addComponent<CTransform>() = playerPos, playerPos,(-2.f, 2.f);
-    //}
-
-    //if (enemySide == "left") {
-    //    m_enemy->addComponent<CTransform>() = enemyPos, enemyPos,(2.f, 2.f);
-    //}
-    //else {
-    //    m_enemy->addComponent<CTransform>() = enemyPos, enemyPos,(2.f, 2.f);
-    //}
+    auto& playerState = m_player->getComponent<CState>().state;
+    auto& enemyState = m_enemy->getComponent<CState>().state;
 
     auto overlap = Physics::getOverlap(m_player, m_enemy);
 
@@ -217,8 +208,19 @@ void Scene_Tussle::playerMovement() {
     m_player->getComponent<CBoundingBox>().pos = playerPos + m_playerCurrentPushPos;
     m_enemy->getComponent<CBoundingBox>().pos = enemyPos + m_enemyCurrentPushPos;
 
-    auto& playerState = m_player->getComponent<CState>().state;
-    auto& enemyState = m_enemy->getComponent<CState>().state;
+    if (playerSide == "right") {
+        playerTfm.scale.x = -1;
+    }
+    else {
+        playerTfm.scale.x = 1;
+    }
+
+    if (enemySide == "right") {
+        enemyTfm.scale.x = -1;
+    }
+    else {
+        enemyTfm.scale.x = 1;
+    }
 
     if(playerVel.x == 0 && playerVel.y == 0 && (playerState == "6" || playerState == "4")) { m_player->addComponent<CState>("5"); }
     if (enemyVel.x == 0 && enemyVel.y == 0 && (enemyState == "6" || enemyState == "4")) { m_enemy->addComponent<CState>("5"); }
@@ -228,33 +230,38 @@ void Scene_Tussle::playerMovement() {
 void Scene_Tussle::sRender() {
     m_game->window().setView(m_worldView);
 
+    //Time
     int currentTime = m_time.asSeconds();
     sf::Text time(std::to_string(currentTime), Assets::getInstance().getFont("main"));
     time.setPosition(880, 135);
 
-    sf::RectangleShape playerHP(sf::Vector2f(m_playerHP, 50.f));
-    playerHP.setPosition(150.f, 50.f);
-    playerHP.setFillColor(sf::Color::Yellow);
-
-    sf::RectangleShape playerBehind(sf::Vector2f(410, 60.f));
-    playerBehind.setPosition(145.f, 45.f);
-    playerBehind.setFillColor(sf::Color::Black);
-
-    sf::RectangleShape enemyHP(sf::Vector2f(m_enemyHP, 50.f));
-    enemyHP.setPosition(1450.f, 50.f);
-    enemyHP.setFillColor(sf::Color::Yellow);
-
-    sf::RectangleShape enemyBehind(sf::Vector2f(410, 60.f));
-    enemyBehind.setPosition(1445.f, 45.f);
-    enemyBehind.setFillColor(sf::Color::Black);
-
+    //Timer
     auto e = m_entityManager.addEntity("timer");
-
     auto& sprite = e->addComponent<CSprite>(Assets::getInstance().getTexture("Timer")).sprite;
     sprite.setOrigin(0.f, 0.f);
     sprite.setPosition(800, 0);
 
-    // draw bkg first
+    //Player Healthbar
+    sf::RectangleShape playerHP(sf::Vector2f(m_playerHP, 50.f));
+    playerHP.setPosition(150.f, 50.f);
+    playerHP.setFillColor(sf::Color::Yellow);
+
+    //Player Healthbar Border
+    sf::RectangleShape playerBehind(sf::Vector2f(410, 60.f));
+    playerBehind.setPosition(145.f, 45.f);
+    playerBehind.setFillColor(sf::Color::Black);
+
+    //Enemy Healthbar
+    sf::RectangleShape enemyHP(sf::Vector2f(m_enemyHP, 50.f));
+    enemyHP.setPosition(1450.f, 50.f);
+    enemyHP.setFillColor(sf::Color::Yellow);
+
+    //Enemy Healthbar Border
+    sf::RectangleShape enemyBehind(sf::Vector2f(410, 60.f));
+    enemyBehind.setPosition(1445.f, 45.f);
+    enemyBehind.setFillColor(sf::Color::Black);
+
+    //Draw the Background First
     for (auto e: m_entityManager.getEntities("bkg")) {
         if (e->getComponent<CSprite>().has) {
             auto&sprite = e->getComponent<CSprite>().sprite;
@@ -264,6 +271,7 @@ void Scene_Tussle::sRender() {
         }
     }
 
+    //Draw the Timer
     for (auto e : m_entityManager.getEntities("timer")) {
         if (e->getComponent<CSprite>().has) {
             auto& sprite = e->getComponent<CSprite>().sprite;
@@ -272,6 +280,7 @@ void Scene_Tussle::sRender() {
         }
     }
 
+    //Draw the Player Healthbar
     for (auto e : m_entityManager.getEntities("PlayerHealthbar")) {
         if (e->getComponent<CSprite>().has) {
             auto& sprite = e->getComponent<CSprite>().sprite;
@@ -282,6 +291,7 @@ void Scene_Tussle::sRender() {
         m_game->window().draw(playerHP);
     }
 
+    //Draw the Enemy Healthbar
     for (auto e : m_entityManager.getEntities("EnemyHealthbar")) {
         if (e->getComponent<CSprite>().has) {
             auto& sprite = e->getComponent<CSprite>().sprite;
@@ -303,6 +313,7 @@ void Scene_Tussle::sRender() {
         anim.getSprite().setRotation(tfm.angle);
         m_game->window().draw(anim.getSprite());
 
+        //Show Collisions (Turn This off on Final Display)
         if (m_drawAABB) {
             if (e->hasComponent<CBoundingBox>()) {
                 auto push = e->getComponent<CBoundingBox>();
@@ -561,7 +572,6 @@ void Scene_Tussle::sCollisions() {
     auto playerHitsEnemy = Physics::getHitOverlap(m_player, m_enemy);
     auto enemyHitsPlayer = Physics::getHitOverlap(m_enemy, m_player);
 
-    
     if (playerHitsEnemy.x > 0 && playerHitsEnemy.y > 0 && m_enemy->getComponent<CState>().state != "STUN") {
         m_enemy->addComponent<CState>("HIT");
     }
@@ -588,6 +598,7 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
 
     auto sideCheck = playerPos.x - enemyPos.x;
 
+    //Check Which Side the Player Should be Facing
     if (sideCheck >= 0) {
         m_player->addComponent<CSide>("right");
         m_enemy->addComponent<CSide>("left");
@@ -597,6 +608,7 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
         m_enemy->addComponent<CSide>("right");
     }
 
+    //Play Animation if Character is Standing Still
     if (m_playerIdleTime.asSeconds() != 0) {
         m_playerIdleTime -= dt;
     }
@@ -607,6 +619,7 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
     }
     else { m_enemy->addComponent<CState>("idleTimeout"); }
 
+    //If the Player's Recovery Time Isn't 0, Tick Down and Make Sure They Can't be Hit
     if (m_pRecovery.asSeconds() > 0) {
         m_pRecovery -= dt;
         m_player->removeComponent<CHurtBox>();
@@ -619,12 +632,13 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
     }
     else { m_enemyCanBeHit = true; }
 
+    //Tick Time Down
     m_time -= dt;
 
-    int timer = m_time.asSeconds();
-    //if (timer == 0) {
-        //FINISH THE GAME
-    //}
+    if (m_time.asSeconds() == 0 || m_playerHP <= 0 || m_enemyHP <= 0) {
+        if (m_playerHP <= 0) { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_eWin, m_pLose, 2)); }
+        else { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_pWin, m_eLose, 1)); }
+    }
 
     checkPlayerState();
     checkEnemyState();
@@ -713,13 +727,13 @@ void Scene_Tussle::adjustPlayerPosition() {
     auto&enemy_pos = m_enemy->getComponent<CTransform>().pos;
     auto halfSize = sf::Vector2f{20, 20};
 
-    // keep player in bounds
+    //Keep Player in Bounds
     player_pos.x = std::max(player_pos.x, left + halfSize.x);
     player_pos.x = std::min(player_pos.x, right - halfSize.x);
     player_pos.y = std::max(player_pos.y, top + halfSize.y);
     player_pos.y = std::min(player_pos.y, bot - halfSize.y);
 
-    //keep enemy in bounds
+    //Keep Enemy in Bounds
     enemy_pos.x = std::max(enemy_pos.x, left + halfSize.x);
     enemy_pos.x = std::min(enemy_pos.x, right - halfSize.x);
     enemy_pos.y = std::max(enemy_pos.y, top + halfSize.y);
@@ -967,7 +981,10 @@ void Scene_Tussle::loadCharacter(const std::string& path) {
     std::string token{ "" };
     config >> token;
     while (!config.eof()) {
-        if (token == "DefaultAnimations") {
+        if (token == "Name") {
+            config >> m_pWin >> m_pLose;
+        }
+        else if (token == "DefaultAnimations") {
             config >> m_Default >> m_Crouch >> m_Jump >> m_Idle >> m_WalkForward >> m_WalkBackwards >> m_Hit;
         }
         else if (token == "StandingHits") {
@@ -1042,7 +1059,10 @@ void Scene_Tussle::loadEnemy(const std::string& path) {
     std::string token{ "" };
     config >> token;
     while (!config.eof()) {
-        if (token == "DefaultAnimations") {
+        if (token == "Name") {
+            config >> m_eWin >> m_eLose;
+        }
+        else if (token == "DefaultAnimations") {
             config >> m_Default2 >> m_Crouch2 >> m_Jump2 >> m_Idle2 >> m_WalkForward2 >> m_WalkBackwards2 >> m_Hit2;
         }
         else if (token == "StandingHits") {
