@@ -56,7 +56,7 @@ private:
     sf::Time        m_eRecovery = sf::seconds(0);
     sf::Vector2f    m_enemyCurrentPushPos{ -30, 0 };
 
-    float           m_gravity{ 10 };
+    float           m_gravity{ 11 };
     int             m_speed{ 10 };
     sf::Time        m_time = sf::seconds(120);
 

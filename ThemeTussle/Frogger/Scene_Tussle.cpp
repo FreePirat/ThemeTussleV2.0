@@ -120,9 +120,6 @@ void Scene_Tussle::playerMovement() {
     auto& enemyPos = m_enemy->getComponent<CTransform>().pos;
     auto& enemyVel = m_enemy->getComponent<CTransform>().vel;
 
-    auto& playerTfm = m_player->getComponent<CTransform>();
-    auto& enemyTfm = m_player->getComponent<CTransform>();
-
     auto& playerInput = m_player->getComponent<CInput>();
     auto& enemyInput = m_enemy->getComponent<CInput>();
 
@@ -207,20 +204,6 @@ void Scene_Tussle::playerMovement() {
 
     m_player->getComponent<CBoundingBox>().pos = playerPos + m_playerCurrentPushPos;
     m_enemy->getComponent<CBoundingBox>().pos = enemyPos + m_enemyCurrentPushPos;
-
-    if (playerSide == "right") {
-        playerTfm.scale.x = -1;
-    }
-    else {
-        playerTfm.scale.x = 1;
-    }
-
-    if (enemySide == "right") {
-        enemyTfm.scale.x = -1;
-    }
-    else {
-        enemyTfm.scale.x = 1;
-    }
 
     if(playerVel.x == 0 && playerVel.y == 0 && (playerState == "6" || playerState == "4")) { m_player->addComponent<CState>("5"); }
     if (enemyVel.x == 0 && enemyVel.y == 0 && (enemyState == "6" || enemyState == "4")) { m_enemy->addComponent<CState>("5"); }
@@ -574,10 +557,12 @@ void Scene_Tussle::sCollisions() {
 
     if (playerHitsEnemy.x > 0 && playerHitsEnemy.y > 0 && m_enemy->getComponent<CState>().state != "STUN") {
         m_enemy->addComponent<CState>("HIT");
+        SoundPlayer::getInstance().play("Select");
     }
 
     if (enemyHitsPlayer.x > 0 && enemyHitsPlayer.y > 0 && m_player->getComponent<CState>().state != "STUN") {
         m_player->addComponent<CState>("HIT");
+        SoundPlayer::getInstance().play("Select");
     }
 }
 
@@ -746,6 +731,14 @@ void Scene_Tussle::checkEnemyState() {
     auto enemySide = m_enemy->getComponent<CSide>().side;
     auto enemyState = m_enemy->getComponent<CState>().state;
     auto enemyAnimName = m_enemy->getComponent<CAnimation>().animation.getName();
+    auto& enemyTfm = m_player->getComponent<CTransform>();
+
+    if (enemySide == "right") {
+        enemyTfm.scale.x = -1;
+    }
+    else {
+        enemyTfm.scale.x = 1;
+    }
 
     stateCheckNohitBox(m_enemy, "5", m_Default2, m_enemyHurtboxSize[12], m_enemyHurtboxPos[12], enemyPos);
     stateCheckNohitBox(m_enemy, "6", m_WalkForward2, m_enemyHurtboxSize[12], m_enemyHurtboxPos[12], enemyPos);
@@ -812,6 +805,14 @@ void Scene_Tussle::checkPlayerState() {
     auto playerSide = m_player->getComponent<CSide>().side;
     auto playerState = m_player->getComponent<CState>().state;
     auto playerAnimName = m_player->getComponent<CAnimation>().animation.getName();
+    auto& playerTfm = m_player->getComponent<CTransform>();
+
+    if (playerSide == "right") {
+        playerTfm.scale.x = -1;
+    }
+    else {
+        playerTfm.scale.x = 1;
+    }
 
     stateCheckNohitBox(m_player, "5", m_Default, m_playerHurtboxSize[12], m_playerHurtboxPos[12], playerPos);
     stateCheckNohitBox(m_player, "6", m_WalkForward, m_playerHurtboxSize[12], m_playerHurtboxPos[12], playerPos);

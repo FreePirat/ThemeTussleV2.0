@@ -67,15 +67,15 @@ void Scene_Character_Select::init()
 
 	std::string randomPath;
 	if (characterPicker == 1) { randomPath = "../assets/nina.txt"; }
-	else if (characterPicker == 2) { randomPath = "../assets/suzie.txt"; }
-	else if (characterPicker == 3) { randomPath = "../assets/leo.txt"; }
-	else { randomPath = "../assets/charlie.txt"; }
+	else if (characterPicker == 2) { randomPath = "../assets/nina.txt"; }
+	else if (characterPicker == 3) { randomPath = "../assets/nina.txt"; }
+	else { randomPath = "../assets/nina.txt"; }
 
 	m_characterPath.push_back("../assets/nina.txt");
-	m_characterPath.push_back("../assets/suzie.txt");
+	m_characterPath.push_back("../assets/nina.txt");
 	m_characterPath.push_back(randomPath);
-	m_characterPath.push_back("../assets/leo.txt");
-	m_characterPath.push_back("../assets/charlie.txt");
+	m_characterPath.push_back("../assets/nina.txt");
+	m_characterPath.push_back("../assets/nina.txt");
 
 	m_stagePath.push_back("../assets/danger.txt");
 	m_stagePath.push_back("../assets/kingdom.txt");

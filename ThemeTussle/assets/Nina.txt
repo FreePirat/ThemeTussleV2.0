@@ -149,7 +149,7 @@ HurtboxSize 160 300
 #########################################################################
 
 #Stats  Health	JumpHeight   Pushbox
-Stats	 400       600       100  250
+Stats	 400       600       100  200
 
 #Healthbar
 Healthbar NinaHealthbar

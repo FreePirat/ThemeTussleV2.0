@@ -55,6 +55,10 @@ void Scene_WinScreen::sRender()
 		winnerText.setString("THE WINNER IS PLAYER 2");
 	}
 
+	sf::Text title("END SCENE", Assets::getInstance().getFont("main"));
+	title.setPosition(800, 10);
+	title.setCharacterSize(50);
+
 	auto w = m_entityManager.addEntity("winner");
 	w->addComponent<CSprite>(Assets::getInstance().getTexture(m_winner));
 	auto& winner = w->getComponent<CSprite>().sprite;
@@ -76,7 +80,7 @@ void Scene_WinScreen::sRender()
 	m_game->window().draw(winnerText);
 	m_game->window().draw(winner);
 	m_game->window().draw(loser);
-
+	m_game->window().draw(title);
 }
 
 void Scene_WinScreen::sDoAction(const Command& action)
