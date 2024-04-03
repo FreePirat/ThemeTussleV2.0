@@ -57,7 +57,7 @@ void Scene_WinScreen::sRender()
 
 	sf::Text title("END SCENE", Assets::getInstance().getFont("main"));
 	title.setPosition(800, 10);
-	title.setCharacterSize(50);
+	title.setCharacterSize(100);
 
 	auto w = m_entityManager.addEntity("winner");
 	w->addComponent<CSprite>(Assets::getInstance().getTexture(m_winner));
@@ -74,7 +74,7 @@ void Scene_WinScreen::sRender()
 	loser.setPosition(1800, 800);
 
 	winnerText.setPosition(650, 850);
-	winnerText.setCharacterSize(50);
+	winnerText.setCharacterSize(100);
 
 	m_game->window().draw(sprite);
 	m_game->window().draw(winnerText);

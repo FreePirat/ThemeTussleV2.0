@@ -3,7 +3,7 @@
 Window  1920 1080
 
 Font    Arial           ../assets/fonts/arial.ttf
-Font    main            ../assets/fonts/Sansation.ttf
+Font    main            ../assets/fonts/stencil.ttf
 Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 
 Music MainTheme         ../assets/Music/MainTheme.ogg
@@ -36,10 +36,18 @@ Texture CSLeoSelected	../assets/Textures/CSLeo_Selected.png
 Texture CSCharlie	../assets/Textures/CSCharlie.png
 Texture CSCharlieSelected ../assets/Textures/CSCharlie_Selected.png
 Texture NinaHealthbar ../assets/Textures/NinaHealthbar.png
+Texture CharlieHealthbar ../assets/Textures/CharlieHealthbar.png
 Texture Timer		../assets/Textures/Timer.png
 Texture WinnerStage	../assets/Textures/WinnerStage.png
 Texture NWin		../assets/Textures/NWin.png
 Texture NLose		../assets/Textures/NLose.png
+Texture Suzie		../assets/Textures/Suzie.png	
+Texture Random		../assets/Textures/Random.png	
+Texture Charlie		../assets/Textures/Charlie.png	
+Texture Leo		../assets/Textures/Leo.png
+Texture TutorialStage   ../assets/Textures/TutorialStage.png		
+Texture TutorialStage2   ../assets/Textures/TutorialStage2.png	
+Texture TutorialStage3   ../assets/Textures/TutorialStage3.png	
 
 # Sprites
 Sprite Background       Background   0 0  1920 1080
@@ -67,14 +75,25 @@ Sprite CSLeoSelected	CSLeoSelected	0  0  200 200
 Sprite CSCharlie	CSCharlie	0  0  200 200
 Sprite CSCharlieSelected CSCharlieSelected	0  0  200 200
 Sprite NinaHealthbar	NinaHealthbar 0 0 200 200
+Sprite CharlieHealthbar	CharlieHealthbar 0 0 200 200
 Sprite Timer		Timer	0  0  200 200
 Sprite WinnerStage	WinnerStage 0 0 1920 1080
 Sprite NWin		NWin	0 0 200 200
 Sprite NLose		NLose 0 0 200 200
+Sprite Suzie		Suzie 0	0 200 200
+Sprite Random		Random 0 0 200 200
+Sprite Charlie		Charlie 0 0 200 200
+Sprite Leo		Leo 0 0 200 200
+Sprite TutorialStage	TutorialStage 0 0 1920 1080
+Sprite TutorialStage2	TutorialStage2 0 0 1920 1080
+Sprite TutorialStage3	TutorialStage3 0 0 1920 1080
 
 #
 # SOUNDS
 Sound Select             ../assets/Sound/select.wav
+Sound SmallHit             ../assets/Sound/SmallHit.wav
+Sound MediumHit             ../assets/Sound/MediumHit.wav
+Sound BigHit             ../assets/Sound/BigHit.wav
 
 JSON                    ../assets/Textures/characterJSON.json
 

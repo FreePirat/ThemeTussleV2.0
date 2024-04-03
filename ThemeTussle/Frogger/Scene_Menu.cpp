@@ -5,6 +5,7 @@
 #include <memory>
 #include "SoundPlayer.h"
 #include "MusicPlayer.h"
+#include "Scene_Tutorial.h"
 
 void Scene_Menu::onEnd()
 {
@@ -37,11 +38,10 @@ void Scene_Menu:: init()
 
 	m_levelPaths.push_back("../assets/arcade.txt");
 	m_levelPaths.push_back("../assets/versus.txt");
-	m_levelPaths.push_back("../assets/tutorial.txt");
 
 	m_menuText.setFont(Assets::getInstance().getFont("main"));
 
-	const size_t CHAR_SIZE{ 64 };
+	const size_t CHAR_SIZE{ 100 };
 	m_menuText.setCharacterSize(CHAR_SIZE);
 
 }
@@ -85,7 +85,24 @@ void Scene_Menu::sRender()
 		m_game->window().draw(m_menuText);
 	} 
 	//m_game->window().display();
-
+	sf::Text description("", Assets::getInstance().getFont("main"), 50);
+	if (m_menuIndex == 0) {
+		description.setString("Fight against a computer in a story (WIP)");
+		description.setPosition(500, 175);
+	}
+	else if (m_menuIndex == 1) {
+		description.setString("Fight against another player!");
+		description.setPosition(500, 275);
+	}
+	else if (m_menuIndex == 2) {
+		description.setString("Learn about the game");
+		description.setPosition(500, 375);
+	}
+	else {
+		description.setString("");
+	}
+	description.setFillColor(sf::Color(255, 255, 0));
+	m_game->window().draw(description);
 }
 
 
@@ -113,7 +130,7 @@ void Scene_Menu::sDoAction(const Command& action)
 			}
 			if (m_menuIndex == 2) {
 				SoundPlayer::getInstance().play("Select");
-				m_game->changeScene("TUTORIAL", std::make_shared<Scene_Character_Select>(m_game, m_levelPaths[m_menuIndex]));
+				m_game->changeScene("TUTORIAL", std::make_shared<Scene_Tutorial>(m_game));
 			}
 			if (m_menuIndex == 3) {
 				SoundPlayer::getInstance().play("Select");

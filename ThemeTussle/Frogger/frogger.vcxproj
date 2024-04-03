@@ -33,6 +33,7 @@
     <ClCompile Include="Scene_Tussle.cpp" />
     <ClCompile Include="Scene_Menu.cpp" />
     <ClCompile Include="Scene_Settings.cpp" />
+    <ClCompile Include="Scene_Tutorial.cpp" />
     <ClCompile Include="Scene_WinScreen.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Utilities.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Scene_Tussle.h" />
     <ClInclude Include="Scene_Menu.h" />
     <ClInclude Include="Scene_Settings.h" />
+    <ClInclude Include="Scene_Tutorial.h" />
     <ClInclude Include="Scene_WinScreen.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Utilities.h" />

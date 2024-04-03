@@ -9,6 +9,16 @@ class Scene_Character_Select : public Scene
 private:
 
 	sPtrEntt					m_stage{ nullptr };
+
+	sPtrEntt			        m_player1{ nullptr };
+	sPtrEntt			        m_player2{ nullptr };
+
+	sPtrEntt			        m_ninaIcon{ nullptr };
+	sPtrEntt			        m_suzieIcon{ nullptr };
+	sPtrEntt			        m_randomIcon{ nullptr };
+	sPtrEntt			        m_leoIcon{ nullptr };
+	sPtrEntt			        m_charlieIcon{ nullptr };
+
 	std::vector<std::string>	m_menuNames;
 	std::vector<std::string>	m_menuLevels;
 	sf::Text					m_menuText;
@@ -26,6 +36,7 @@ private:
 	std::string					m_character;
 	std::string					m_enemy;
 	bool						m_player1Picked{ false };
+	bool						m_notPlayable{ false };
 	
 
 	void						loadStage();

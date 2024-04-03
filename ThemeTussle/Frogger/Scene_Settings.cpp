@@ -46,7 +46,7 @@ void Scene_Settings::init()
 
 	m_menuText.setFont(Assets::getInstance().getFont("main"));
 
-	const size_t CHAR_SIZE{ 64 };
+	const size_t CHAR_SIZE{ 100 };
 	m_menuText.setCharacterSize(CHAR_SIZE);
 
 }
@@ -112,15 +112,15 @@ void Scene_Settings::sRender()
 			volumeSetter.setOrigin(0, 0);
 			volumeSetter.setPosition(m_game->window().getSize().x / 10.f, m_game->window().getSize().y / 10.f);
 
-			sf::Text footer("QUIETER: A/ <-    LOUDER: D/ ->   SAVE CHANGES: Spacebar	DISCARD CHANGES: Q/ ESC",
-				Assets::getInstance().getFont("main"), 20);
+			sf::Text footer("QUIETER: A   LOUDER: D  SAVE CHANGES: Spacebar	DISCARD CHANGES: Q/ ESC",
+				Assets::getInstance().getFont("main"), 30);
 			footer.setFillColor(selectedColor);
-			footer.setPosition(m_game->window().getSize().x - 1000, 950);
+			footer.setPosition(m_game->window().getSize().x - 750, 950);
 
 			sf::Text number(std::to_string(m_volumeNumber),
-				Assets::getInstance().getFont("main"), 200);
+				Assets::getInstance().getFont("main"), 300);
 			number.setFillColor(selectedColor);
-			number.setPosition(m_game->window().getSize().x / 2.4, m_game->window().getSize().y / 2.75);
+			number.setPosition(m_game->window().getSize().x / 2.35, m_game->window().getSize().y / 3);
 
 			m_game->window().draw(volumeSetter);
 			m_game->window().draw(footer);

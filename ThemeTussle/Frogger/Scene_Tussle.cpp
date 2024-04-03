@@ -9,6 +9,7 @@
 #include "Assets.h"
 #include "SoundPlayer.h"
 #include "Scene_WinScreen.h"
+#include <random>
 
 
 Scene_Tussle::Scene_Tussle(GameEngine* gameEngine, const std::string& characterPath, const std::string& enemyPath, const std::string& levelPath, const std::string& modePath)
@@ -215,13 +216,13 @@ void Scene_Tussle::sRender() {
 
     //Time
     int currentTime = m_time.asSeconds();
-    sf::Text time(std::to_string(currentTime), Assets::getInstance().getFont("main"));
-    time.setPosition(880, 135);
+    sf::Text time(std::to_string(currentTime), Assets::getInstance().getFont("main"), 50);
+    time.setPosition(880, 125);
 
     //Timer
     auto e = m_entityManager.addEntity("timer");
     auto& sprite = e->addComponent<CSprite>(Assets::getInstance().getTexture("Timer")).sprite;
-    sprite.setOrigin(0.f, 0.f);
+    sprite.setOrigin(0.f, 0.f); 
     sprite.setPosition(800, 0);
 
     //Player Healthbar
@@ -335,7 +336,7 @@ void Scene_Tussle::sRender() {
 
     if (m_isPaused) {
         sf::Text paused("PAUSED", Assets::getInstance().getFont("main"));
-        paused.setPosition(600, 350);
+        paused.setPosition(675, 350);
         paused.setCharacterSize(200);
         m_game->window().draw(paused);
     }
@@ -350,6 +351,9 @@ void Scene_Tussle::sDoAction(const Command&action) {
 
     auto playerState = m_player->getComponent<CState>().state;
     auto enemyState = m_enemy->getComponent<CState>().state;
+
+    auto& playerSide = m_player->getComponent<CSide>().side;
+    auto& enemySide = m_enemy->getComponent<CSide>().side;
 
     if (action.type() == "START") {
         if (action.name() == "PAUSE") { setPaused(!m_isPaused); SoundPlayer::getInstance().play("Select"); }
@@ -378,12 +382,18 @@ void Scene_Tussle::sDoAction(const Command&action) {
             //This denies being able to crouch while walking.
             else if (action.name() == "LEFT") {
                 m_player->getComponent<CInput>().LEFT = true;
-                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) { m_player->addComponent<CState>("4"); }
+                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) {
+                    if (playerSide == "left") { m_player->addComponent<CState>("4"); }
+                    else{ m_player->addComponent<CState>("6"); }
+                }
             }
 
             else if (action.name() == "RIGHT") {
                 m_player->getComponent<CInput>().RIGHT = true;
-                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) { m_player->addComponent<CState>("6"); }
+                if (m_playerCanJump && !m_player->getComponent<CInput>().DOWN) {
+                    if (playerSide == "right") { m_player->addComponent<CState>("4"); }
+                    else { m_player->addComponent<CState>("6"); }
+                }
             }
 
             //LIGHT ATTACKS
@@ -445,12 +455,18 @@ void Scene_Tussle::sDoAction(const Command&action) {
 
             else if (action.name() == "LEFT2") {
                 m_enemy->getComponent<CInput>().LEFT2 = true;
-                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) { m_enemy->addComponent<CState>("4"); }
+                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) {
+                    if (enemySide == "left") { m_enemy->addComponent<CState>("4"); }
+                    else { m_enemy->addComponent<CState>("6"); }
+                }
             }
 
             else if (action.name() == "RIGHT2") {
                 m_enemy->getComponent<CInput>().RIGHT2 = true;
-                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) { m_enemy->addComponent<CState>("6"); }
+                if (m_enemyCanJump && !m_enemy->getComponent<CInput>().DOWN2) {
+                    if (enemySide == "right") { m_enemy->addComponent<CState>("4"); }
+                    else { m_enemy->addComponent<CState>("6"); }
+                }
             }
 
             else if (action.name() == "LIGHT2") {
@@ -555,14 +571,29 @@ void Scene_Tussle::sCollisions() {
     auto playerHitsEnemy = Physics::getHitOverlap(m_player, m_enemy);
     auto enemyHitsPlayer = Physics::getHitOverlap(m_enemy, m_player);
 
+    std::random_device rd;
+    std::mt19937 rand(rd());
+
+    std::uniform_int_distribution<> dis(1, 3);
+
+    int sound = dis(rand);
+
     if (playerHitsEnemy.x > 0 && playerHitsEnemy.y > 0 && m_enemy->getComponent<CState>().state != "STUN") {
         m_enemy->addComponent<CState>("HIT");
-        SoundPlayer::getInstance().play("Select");
+        if (SoundPlayer::getInstance().isEmpty()) { 
+            if (sound == 1) { SoundPlayer::getInstance().play("SmallHit"); }
+            else if(sound == 2) { SoundPlayer::getInstance().play("MediumHit"); }
+            else{ SoundPlayer::getInstance().play("BigHit"); }
+        }
     }
 
     if (enemyHitsPlayer.x > 0 && enemyHitsPlayer.y > 0 && m_player->getComponent<CState>().state != "STUN") {
         m_player->addComponent<CState>("HIT");
-        SoundPlayer::getInstance().play("Select");
+        if (SoundPlayer::getInstance().isEmpty()) {
+            if (sound == 1) { SoundPlayer::getInstance().play("SmallHit"); }
+            else if (sound == 2) { SoundPlayer::getInstance().play("MediumHit"); }
+            else { SoundPlayer::getInstance().play("BigHit"); }
+        }
     }
 }
 

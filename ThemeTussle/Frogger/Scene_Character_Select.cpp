@@ -87,9 +87,17 @@ void Scene_Character_Select::init()
 
 	m_menuText.setFont(Assets::getInstance().getFont("main"));
 
-	const size_t CHAR_SIZE{ 64 };
+	const size_t CHAR_SIZE{ 100 };
 	m_menuText.setCharacterSize(CHAR_SIZE);
 
+	m_player1 = m_entityManager.addEntity("Player1");
+	m_player2 = m_entityManager.addEntity("Player2");
+
+	m_ninaIcon = m_entityManager.addEntity("CSNina");
+	m_suzieIcon = m_entityManager.addEntity("CSSuzie");
+	m_randomIcon = m_entityManager.addEntity("CSRandom");
+	m_leoIcon = m_entityManager.addEntity("CSLeo");
+	m_charlieIcon = m_entityManager.addEntity("CSCharlie");
 }
 
 void Scene_Character_Select::update(sf::Time dt)
@@ -129,67 +137,97 @@ void Scene_Character_Select::sRender()
 
 
 	if (!m_stageToggle) {
-		auto n = m_entityManager.addEntity("CSNina");
+
 		if (m_menuIndex == 0) {
-			n->addComponent<CSprite>(Assets::getInstance().getTexture("CSNinaSelected"));
+			m_ninaIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSNinaSelected"));
+			//Player 1
 			if (!m_player1Picked) {
-				auto nIdle = m_entityManager.addEntity("NinaIdle");
-				nIdle->addComponent<CAnimation>(Assets::getInstance().getAnimation("NIdle"));
-				nIdle->addComponent<CTransform>().pos = { 210, 290 };
+				m_player1->addComponent<CSprite>(Assets::getInstance().getTexture("NWin"));
 			}
+			//Player 2
 			else {
-				auto nIdle = m_entityManager.addEntity("NinaIdle2");
-				nIdle->addComponent<CAnimation>(Assets::getInstance().getAnimation("NIdle"));
-				nIdle->addComponent<CTransform>().pos = { 1790, 290 };
+				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("NWin"));
 			}
+			m_notPlayable = false;
 		}
 		else {
-			n->addComponent<CSprite>(Assets::getInstance().getTexture("CSNina"));
-			if (!m_player1Picked) {
-				for (auto nIdle : m_entityManager.getEntities("NinaIdle")) {
-					nIdle->destroy();
-				}
-			}
-			else {
-				for (auto nIdle : m_entityManager.getEntities("NinaIdle2")) {
-					nIdle->destroy();
-				}
-			}
+			m_ninaIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSNina"));
 		}
 
-		auto s = m_entityManager.addEntity("CSSuzie");
-		if (m_menuIndex == 1) { s->addComponent<CSprite>(Assets::getInstance().getTexture("CSSuzieSelected")); }
-		else { s->addComponent<CSprite>(Assets::getInstance().getTexture("CSSuzie")); }
+		if (m_menuIndex == 1) {
+			m_suzieIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSSuzieSelected"));
+			if (!m_player1Picked) {
+				m_player1->addComponent<CSprite>(Assets::getInstance().getTexture("Suzie"));
+			}
+			else {
+				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("Suzie"));
+			}
+			m_notPlayable = true;
+		}
+		else { m_suzieIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSSuzie")); }
 
-		auto r = m_entityManager.addEntity("CSRandom");
-		if (m_menuIndex == 2) { r->addComponent<CSprite>(Assets::getInstance().getTexture("CSRandomSelected")); }
-		else { r->addComponent<CSprite>(Assets::getInstance().getTexture("CSRandom")); }
+		if (m_menuIndex == 2) {
+			m_randomIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSRandomSelected"));
+			if (!m_player1Picked) {
+				m_player1->addComponent<CSprite>(Assets::getInstance().getTexture("Random"));
+			}
+			else {
+				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("Random"));
+			}
+			m_notPlayable = false;
+		}
+		else { m_randomIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSRandom")); }
 
-		auto l = m_entityManager.addEntity("CSLeo");
-		if (m_menuIndex == 3) { l->addComponent<CSprite>(Assets::getInstance().getTexture("CSLeoSelected")); }
-		else { l->addComponent<CSprite>(Assets::getInstance().getTexture("CSLeo")); }
+		if (m_menuIndex == 3) {
+			m_leoIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSLeoSelected"));
+			if (!m_player1Picked) {
+				m_player1->addComponent<CSprite>(Assets::getInstance().getTexture("Leo"));
+			}
+			else {
+				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("Leo"));
+			}
+			m_notPlayable = true;
+		}
+		else { m_leoIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSLeo")); }
 
-		auto c = m_entityManager.addEntity("CSCharlie");
-		if (m_menuIndex == 4) { c->addComponent<CSprite>(Assets::getInstance().getTexture("CSCharlieSelected")); }
-		else { c->addComponent<CSprite>(Assets::getInstance().getTexture("CSCharlie")); }
+		if (m_menuIndex == 4) {
+			m_charlieIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSCharlieSelected"));
+			if (!m_player1Picked) {
+				m_player1->addComponent<CSprite>(Assets::getInstance().getTexture("Charlie"));
+			}
+			else {
+				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("Charlie"));
+			}
+			m_notPlayable = true;
+		}
+		else { m_charlieIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSCharlie")); }
 
-		auto& ninaSprite = n->getComponent<CSprite>().sprite;
+		auto& player1Sprite = m_player1->getComponent<CSprite>().sprite;
+		player1Sprite.setOrigin(0.f, 0.f);
+		player1Sprite.setPosition(50, 100);
+		m_player1->addComponent<CState>("player1");
+
+		auto& player2Sprite = m_player2->getComponent<CSprite>().sprite;
+		player2Sprite.setOrigin(0.f, 0.f);
+		player2Sprite.setPosition(1650, 100);
+
+		auto& ninaSprite = m_ninaIcon->getComponent<CSprite>().sprite;
 		ninaSprite.setOrigin(0.f, 0.f);
 		ninaSprite.setPosition(282, 605);
 
-		auto& suzieSprite = s->getComponent<CSprite>().sprite;
+		auto& suzieSprite = m_suzieIcon->getComponent<CSprite>().sprite;
 		suzieSprite.setOrigin(0.f, 0.f);
 		suzieSprite.setPosition(540, 605);
 
-		auto& randomSprite = r->getComponent<CSprite>().sprite;
+		auto& randomSprite = m_randomIcon->getComponent<CSprite>().sprite;
 		randomSprite.setOrigin(0.f, 0.f);
 		randomSprite.setPosition(794, 605);
 
-		auto& leoSprite = l->getComponent<CSprite>().sprite;
+		auto& leoSprite = m_leoIcon->getComponent<CSprite>().sprite;
 		leoSprite.setOrigin(0.f, 0.f);
 		leoSprite.setPosition(1046, 605);
 
-		auto& charlieSprite = c->getComponent<CSprite>().sprite;
+		auto& charlieSprite = m_charlieIcon->getComponent<CSprite>().sprite;
 		charlieSprite.setOrigin(0.f, 0.f);
 		charlieSprite.setPosition(1298, 605);
 	}
@@ -197,13 +235,10 @@ void Scene_Character_Select::sRender()
 		for (auto& e : m_entityManager.getEntities()) {
 			if (!e->hasComponent<CSprite>() || e->getComponent<CState>().state == "background")
 				continue;
-			e->destroy();
-		}
-
-		for (auto& e : m_entityManager.getEntities()) {
-			if (!e->hasComponent<CAnimation>())
+			if (m_player1Picked && e->getComponent<CState>().state == "player1") {
 				continue;
-			e->destroy();
+			}
+			e->removeComponent<CSprite>();
 		}
 	}
 
@@ -225,7 +260,6 @@ void Scene_Character_Select::sRender()
 		sprite.setPosition(0, 0);
 		m_game->window().draw(sprite);
 	}
-	
 
 	for (auto& e : m_entityManager.getEntities()) {
 		if (!e->hasComponent<CSprite>() || e->getComponent<CState>().state == "background")
@@ -235,19 +269,16 @@ void Scene_Character_Select::sRender()
 		m_game->window().draw(sprite);
 	}
 
-	for (auto& e : m_entityManager.getEntities()) {
-		if (!e->hasComponent<CAnimation>())
-			continue;
-
-		// Draw Sprite
-		auto& anim = e->getComponent<CAnimation>().animation;
-		auto& tfm = e->getComponent<CTransform>();
-		anim.getSprite().setPosition(tfm.pos);
-		anim.getSprite().setRotation(tfm.angle);
-		m_game->window().draw(anim.getSprite());
-	}
-
 	m_game->window().draw(stageSprite);
+
+	if (m_notPlayable && !m_stageToggle) {
+		sf::Text playable("Character cannot be played", Assets::getInstance().getFont("main"), 100);
+		playable.setFillColor(sf::Color(255, 10, 0));
+		playable.setOutlineColor(sf::Color(255, 255, 255));
+		playable.setOutlineThickness(2);
+		playable.setPosition(500, 400);
+		m_game->window().draw(playable);
+	}
 
 	m_menuText.setFillColor(selectedColor);
 	if (m_stageToggle) {
@@ -284,7 +315,7 @@ void Scene_Character_Select::sRender()
 	//VERSUS MENU
 	if (m_versus && !m_stageToggle) {
 		sf::Text footer("Go Back: Q/ ESC	Change Stage: BackSpace	 Select Character: P/ Enter",
-			Assets::getInstance().getFont("main"), 20);
+			Assets::getInstance().getFont("main"), 30);
 		footer.setFillColor(footerColor);
 		footer.setPosition(m_game->window().getSize().x - 750, 950);
 		m_game->window().draw(footer);
@@ -292,7 +323,7 @@ void Scene_Character_Select::sRender()
 	//STAGE SELECT
 	else if(m_stageToggle) {
 		sf::Text footer("Go Back: Q/ ESC	Previous Stage: UP	Next Stage: DOWN	Select Stage: Spacebar",
-			Assets::getInstance().getFont("main"), 20);
+			Assets::getInstance().getFont("main"), 30);
 		footer.setFillColor(footerColor);
 		footer.setPosition(m_game->window().getSize().x - 875, 950);
 		m_game->window().draw(footer);
@@ -300,7 +331,7 @@ void Scene_Character_Select::sRender()
 	//TUTORIAL AND ARCADE
 	else {
 		sf::Text footer("Go Back: Q/ ESC	Select Character: P/ Enter",
-			Assets::getInstance().getFont("main"), 20);
+			Assets::getInstance().getFont("main"), 30);
 		footer.setFillColor(footerColor);
 		footer.setPosition(m_game->window().getSize().x - 475, 950);
 		m_game->window().draw(footer);
