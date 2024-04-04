@@ -214,6 +214,9 @@ void Scene_Tussle::playerMovement() {
 void Scene_Tussle::sRender() {
     m_game->window().setView(m_worldView);
 
+    auto& playerPos = m_player->getComponent<CTransform>().pos;
+    auto& enemyPos = m_enemy->getComponent<CTransform>().pos;
+
     //Time
     int currentTime = m_time.asSeconds();
     sf::Text time(std::to_string(currentTime), Assets::getInstance().getFont("main"), 50);
@@ -228,7 +231,7 @@ void Scene_Tussle::sRender() {
     //Player Healthbar
     sf::RectangleShape playerHP(sf::Vector2f(m_playerHP, 50.f));
     playerHP.setPosition(150.f, 50.f);
-    playerHP.setFillColor(sf::Color::Yellow);
+    playerHP.setFillColor(m_pColor);
 
     //Player Healthbar Border
     sf::RectangleShape playerBehind(sf::Vector2f(410, 60.f));
@@ -238,7 +241,7 @@ void Scene_Tussle::sRender() {
     //Enemy Healthbar
     sf::RectangleShape enemyHP(sf::Vector2f(m_enemyHP, 50.f));
     enemyHP.setPosition(1450.f, 50.f);
-    enemyHP.setFillColor(sf::Color::Yellow);
+    enemyHP.setFillColor(m_eColor);
 
     //Enemy Healthbar Border
     sf::RectangleShape enemyBehind(sf::Vector2f(410, 60.f));
@@ -285,6 +288,31 @@ void Scene_Tussle::sRender() {
         m_game->window().draw(enemyBehind);
         m_game->window().draw(enemyHP);
     }
+
+    //Round Start
+    int currentRoundTime = m_startRound.asSeconds() + 1;
+    sf::Text round(std::to_string(currentRoundTime), Assets::getInstance().getFont("main"), 200);
+    round.setFillColor(sf::Color::White);
+    round.setOutlineColor(sf::Color::Red);
+    round.setOutlineThickness(5);
+    round.setOrigin(0, 0);
+    round.setPosition(855, 200);
+
+    if (currentRoundTime > 0) {
+        m_game->window().draw(round);
+    }
+    else if (currentRoundTime <= 0 && !m_roundStarted) {
+        round.setPosition(700, 200);
+        round.setString("ACTION!");
+        m_game->window().draw(round);
+    }
+
+    sf::Text hitText("HIT!" + std::to_string(m_hitNumber), Assets::getInstance().getFont("main"), 200);
+    hitText.setFillColor(sf::Color::Red);
+    hitText.setOutlineColor(sf::Color::Black);
+    hitText.setOutlineThickness(5);
+    hitText.setOrigin(0, 0);
+    hitText.setPosition(725, 200);
     
     for (auto&e: m_entityManager.getEntities()) {
         if (!e->hasComponent<CAnimation>())
@@ -295,6 +323,10 @@ void Scene_Tussle::sRender() {
         auto&tfm = e->getComponent<CTransform>();
         anim.getSprite().setPosition(tfm.pos);
         anim.getSprite().setRotation(tfm.angle);
+        if (e->getComponent<CSide>().side == "right") {
+            anim.getSprite().setScale(-1, 1);
+        }
+
         m_game->window().draw(anim.getSprite());
 
         //Show Collisions (Turn This off on Final Display)
@@ -334,6 +366,10 @@ void Scene_Tussle::sRender() {
         }
     }
 
+    if (m_hit) {
+        m_game->window().draw(hitText);
+    }
+
     if (m_isPaused) {
         sf::Text paused("PAUSED", Assets::getInstance().getFont("main"));
         paused.setPosition(675, 350);
@@ -363,7 +399,7 @@ void Scene_Tussle::sDoAction(const Command&action) {
         else if (action.name() == "TOGGLE_COLLISION") { m_drawAABB = !m_drawAABB; }
         else if (action.name() == "TOGGLE_GRID") { m_drawGrid = !m_drawGrid; }
 
-        if (m_playerCanMove) {
+        if (m_playerCanMove && m_roundStarted) {
             //You can cancel anything into a jump
             if (action.name() == "UP") {
                 if (m_playerCanJump) {
@@ -439,7 +475,7 @@ void Scene_Tussle::sDoAction(const Command&action) {
             }
         }
 
-        if (m_enemyCanMove) {
+        if (m_enemyCanMove && m_roundStarted) {
             if (action.name() == "UP2") {
                 if (m_enemyCanJump) {
                     m_enemy->getComponent<CInput>().UP2 = true;
@@ -580,23 +616,29 @@ void Scene_Tussle::sCollisions() {
 
     if (playerHitsEnemy.x > 0 && playerHitsEnemy.y > 0 && m_enemy->getComponent<CState>().state != "STUN") {
         m_enemy->addComponent<CState>("HIT");
-        if (SoundPlayer::getInstance().isEmpty()) { 
-            if (sound == 1) { SoundPlayer::getInstance().play("SmallHit"); }
-            else if(sound == 2) { SoundPlayer::getInstance().play("MediumHit"); }
-            else{ SoundPlayer::getInstance().play("BigHit"); }
-        }
-    }
-
-    if (enemyHitsPlayer.x > 0 && enemyHitsPlayer.y > 0 && m_player->getComponent<CState>().state != "STUN") {
-        m_player->addComponent<CState>("HIT");
         if (SoundPlayer::getInstance().isEmpty()) {
             if (sound == 1) { SoundPlayer::getInstance().play("SmallHit"); }
             else if (sound == 2) { SoundPlayer::getInstance().play("MediumHit"); }
             else { SoundPlayer::getInstance().play("BigHit"); }
         }
+        
+        m_HitTimer = sf::seconds(2);
+        m_hitNumber = m_playerCurAttack;
+    }
+
+    if (enemyHitsPlayer.x > 0 && enemyHitsPlayer.y > 0 && m_player->getComponent<CState>().state != "STUN") {
+        m_player->addComponent<CState>("HIT");
+
+        if (SoundPlayer::getInstance().isEmpty()) {
+            if (sound == 1) { SoundPlayer::getInstance().play("SmallHit"); }
+            else if (sound == 2) { SoundPlayer::getInstance().play("MediumHit"); }
+            else { SoundPlayer::getInstance().play("BigHit"); }
+        }
+        
+        m_HitTimer = sf::seconds(2);
+        m_hitNumber = m_enemyCurAttack;
     }
 }
-
 
 void Scene_Tussle::sUpdate(sf::Time dt) {
 
@@ -640,19 +682,32 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
         m_pRecovery -= dt;
         m_player->removeComponent<CHurtBox>();
     }
-    else { m_playerCanBeHit = true; }
+    else { m_playerCanBeHit = true;}
 
     if (m_eRecovery.asSeconds() > 0) {
         m_eRecovery -= dt;
         m_enemy->removeComponent<CHurtBox>();
     }
-    else { m_enemyCanBeHit = true; }
+    else { m_enemyCanBeHit = true;}
 
-    //Tick Time Down
-    m_time -= dt;
+    if (m_HitTimer.asSeconds() > 0) {
+        m_HitTimer -= dt;
+        m_hit = true;
+    }
+    else { m_hit = false; }
 
-    if (m_time.asSeconds() == 0 || m_playerHP <= 0 || m_enemyHP <= 0) {
-        if (m_playerHP <= 0) { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_eWin, m_pLose, 2)); }
+    if (m_startRound.asSeconds() > -1) {
+        m_startRound -= dt;
+    }
+    else { m_roundStarted = true; }
+
+    if (m_roundStarted) {
+        //Tick Time Down
+        m_time -= dt;
+    }
+
+    if (m_time.asSeconds() <= 0 || m_playerHP <= 0 || m_enemyHP <= 0) {
+        if (m_enemyHP > m_playerHP) { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_eWin, m_pLose, 2)); }
         else { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_pWin, m_eLose, 1)); }
     }
 
@@ -855,7 +910,7 @@ void Scene_Tussle::checkPlayerState() {
     }
 
     if (m_playerCanJump && m_player->getComponent<CInput>().DOWN == true) {
-        stateCheckNohitBox(m_player, "2", m_Crouch2, m_playerHurtboxSize[13], m_playerHurtboxPos[13], playerPos);
+        stateCheckNohitBox(m_player, "2", m_Crouch, m_playerHurtboxSize[13], m_playerHurtboxPos[13], playerPos);
     }
 
     if (m_player->getComponent<CInput>().RIGHT == true && playerSide == "right") {
@@ -910,12 +965,18 @@ void Scene_Tussle::statePlayerCheck(std::string state, std::string animation,
     if (m_player->getComponent<CState>().state == state) {
         if (m_player->getComponent<CAnimation>().animation.getName() != animation) { m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animation)); }
 
-        m_player->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
-            sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        if (m_player->getComponent<CSide>().side == "right") {
+            m_player->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f((hurtboxPos.x * -1.25) + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
+        else {
+            m_player->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
 
         if (m_player->getComponent<CSide>().side == "right") {
             m_player->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
-                sf::Vector2f((hitboxPos.x * -2.5) + playerPos.x, hitboxPos.y + playerPos.y));
+                sf::Vector2f((hitboxPos.x * -1.25) + playerPos.x, hitboxPos.y + playerPos.y));
         }
         else {
             m_player->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
@@ -937,12 +998,18 @@ void Scene_Tussle::stateEnemyCheck(std::string state, std::string animation,
     if (m_enemy->getComponent<CState>().state == state) {
         if (m_enemy->getComponent<CAnimation>().animation.getName() != animation) { m_enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation(animation)); }
 
-        m_enemy->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
-            sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        if (m_enemy->getComponent<CSide>().side == "right") {
+            m_enemy->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f((hurtboxPos.x * -1.25) + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
+        else {
+            m_enemy->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
 
         if (m_enemy->getComponent<CSide>().side == "right") {
             m_enemy->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
-                sf::Vector2f((hitboxPos.x * -2.5) + playerPos.x, hitboxPos.y + playerPos.y));
+                sf::Vector2f((hitboxPos.x * -1.25) + playerPos.x, hitboxPos.y + playerPos.y));
         }
         else {
             m_enemy->addComponent<CHitBox>(sf::Vector2f(hitboxSize),
@@ -964,8 +1031,18 @@ void Scene_Tussle::stateCheckNohitBox(sPtrEntt character, std::string state, std
     if (character->getComponent<CState>().state == state) {
         if (character->getComponent<CAnimation>().animation.getName() != animation) { character->addComponent<CAnimation>(Assets::getInstance().getAnimation(animation)); }
 
-        character->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
-            sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        if (character->getComponent<CSide>().side == "right") {
+            character->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f((hurtboxPos.x * -1.25) + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
+        else {
+            character->addComponent<CHurtBox>(sf::Vector2f(hurtboxSize),
+                sf::Vector2f(hurtboxPos.x + playerPos.x, hurtboxPos.y + playerPos.y));
+        }
+
+        if (state == "6" || state == "4") {
+            if (SoundPlayer::getInstance().isEmpty()) { SoundPlayer::getInstance().play("Walk"); }
+        }
 
         character->removeComponent<CHitBox>();
     }
@@ -1064,6 +1141,10 @@ void Scene_Tussle::loadCharacter(const std::string& path) {
             sprite.setScale(2.f, 2.f);
             sprite.setOrigin(0.f, 0.f);
             sprite.setPosition(0, 0);
+            if (healthbar == "NinaHealthbar") {
+                m_pColor = sf::Color::Yellow;
+            }
+            else { m_pColor = sf::Color::Red; }
         }
         else if (token == "Damage") {
             int dmg;
@@ -1142,6 +1223,10 @@ void Scene_Tussle::loadEnemy(const std::string& path) {
             sprite.setScale(2.f, 2.f);
             sprite.setOrigin(0.f, 0.f);
             sprite.setPosition(1300, 0);
+            if (healthbar == "NinaHealthbar") {
+                m_eColor = sf::Color::Yellow;
+            }
+            else { m_eColor = sf::Color::Red; }
         }
         else if (token == "Damage") {
             int dmg;

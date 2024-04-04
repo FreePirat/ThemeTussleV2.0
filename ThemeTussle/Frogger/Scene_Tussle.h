@@ -42,6 +42,14 @@ private:
     std::string     m_pLose;
     std::string     m_eWin;
     std::string     m_eLose;
+    sf::Color       m_pColor;
+    sf::Color       m_eColor;
+    bool            m_hit;
+    int             m_hitNumber;
+
+    sf::Time        m_HitTimer = sf::seconds(0);
+    sf::Time        m_startRound = sf::seconds(3);
+    bool            m_roundStarted{ false };
 
     bool            m_enemyCanJump{ true };
     bool            m_enemyCanMove{ true };

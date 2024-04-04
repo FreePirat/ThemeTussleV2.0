@@ -6,6 +6,7 @@
 #include "SoundPlayer.h"
 #include "MusicPlayer.h"
 #include "Scene_Tutorial.h"
+#include "Scene_Arcade.h"
 
 void Scene_Menu::onEnd()
 {
@@ -122,7 +123,7 @@ void Scene_Menu::sDoAction(const Command& action)
 		{
 			if (m_menuIndex == 0) {
 				SoundPlayer::getInstance().play("Select");
-				m_game->changeScene("ARCADE", std::make_shared<Scene_Character_Select>(m_game, m_levelPaths[m_menuIndex]));
+				m_game->changeScene("ARCADE", std::make_shared<Scene_Arcade>(m_game));
 			}
 			if (m_menuIndex == 1) {
 				SoundPlayer::getInstance().play("Select");

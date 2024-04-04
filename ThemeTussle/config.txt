@@ -2,9 +2,7 @@
 
 Window  1920 1080
 
-Font    Arial           ../assets/fonts/arial.ttf
 Font    main            ../assets/fonts/stencil.ttf
-Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 
 Music MainTheme         ../assets/Music/MainTheme.ogg
 Music WesternTheme         ../assets/Music/BountyToRally.ogg
@@ -24,7 +22,6 @@ Texture Western2 	../assets/Textures/Western2.png
 Texture StageSelect	../assets/Textures/stageSelect.png
 Texture Select	 	../assets/Textures/select.png
 Texture Select1P	 ../assets/Textures/select_1P.png
-Texture Nina        	../assets/Textures/Nina.png
 Texture CSNina		../assets/Textures/CSNina.png
 Texture CSNinaSelected	../assets/Textures/CSNina_Selected.png
 Texture CSSuzie		../assets/Textures/CSSuzie.png
@@ -41,6 +38,8 @@ Texture Timer		../assets/Textures/Timer.png
 Texture WinnerStage	../assets/Textures/WinnerStage.png
 Texture NWin		../assets/Textures/NWin.png
 Texture NLose		../assets/Textures/NLose.png
+Texture CWin		../assets/Textures/CWin.png
+Texture CLose		../assets/Textures/CLose.png
 Texture Suzie		../assets/Textures/Suzie.png	
 Texture Random		../assets/Textures/Random.png	
 Texture Charlie		../assets/Textures/Charlie.png	
@@ -48,6 +47,9 @@ Texture Leo		../assets/Textures/Leo.png
 Texture TutorialStage   ../assets/Textures/TutorialStage.png		
 Texture TutorialStage2   ../assets/Textures/TutorialStage2.png	
 Texture TutorialStage3   ../assets/Textures/TutorialStage3.png	
+Texture ArcadeStage   ../assets/Textures/ArcadeStage.png	
+Texture Nina        	../assets/Textures/Nina.png
+Texture CharlieSprt     ../assets/Textures/CharlieSprt.png
 
 # Sprites
 Sprite Background       Background   0 0  1920 1080
@@ -80,6 +82,8 @@ Sprite Timer		Timer	0  0  200 200
 Sprite WinnerStage	WinnerStage 0 0 1920 1080
 Sprite NWin		NWin	0 0 200 200
 Sprite NLose		NLose 0 0 200 200
+Sprite CWin		CWin	0 0 200 200
+Sprite CLose		CLose 0 0 200 200
 Sprite Suzie		Suzie 0	0 200 200
 Sprite Random		Random 0 0 200 200
 Sprite Charlie		Charlie 0 0 200 200
@@ -87,6 +91,7 @@ Sprite Leo		Leo 0 0 200 200
 Sprite TutorialStage	TutorialStage 0 0 1920 1080
 Sprite TutorialStage2	TutorialStage2 0 0 1920 1080
 Sprite TutorialStage3	TutorialStage3 0 0 1920 1080
+Sprite ArcadeStage	ArcadeStage 0 0 1920 1080
 
 #
 # SOUNDS
@@ -94,15 +99,16 @@ Sound Select             ../assets/Sound/select.wav
 Sound SmallHit             ../assets/Sound/SmallHit.wav
 Sound MediumHit             ../assets/Sound/MediumHit.wav
 Sound BigHit             ../assets/Sound/BigHit.wav
+Sound Walk             ../assets/Sound/Walk.wav
 
-JSON                    ../assets/Textures/characterJSON.json
+JSON                    ../assets/Textures/ninaJSON.json
+JSON                    ../assets/Textures/charlieJSON.json
 
 #
 #  Animation    Name            Texture     Speed   Repeats
 Animation       NDefault         Nina    0        no
 Animation       NCrouchDefault   Nina    0        no
 Animation       NJumpDefault     Nina    0        no
-Animation       NWin		 Nina    0        no
 Animation       NIdle        	 Nina    4        no
 Animation       NWalkF	         Nina    4        yes
 Animation       NWalkB	         Nina    4        yes
@@ -120,3 +126,22 @@ Animation       N6L		 Nina    3        no
 Animation       N6M		 Nina    4        no
 Animation       N6H		 Nina    4        no
 
+Animation       CDefault         CharlieSprt    0        no
+Animation       CCrouchDefault   CharlieSprt    0        no
+Animation       CJumpDefault     CharlieSprt    0        no
+Animation       CIdle        	 CharlieSprt    4        no
+Animation       CWalkF	         CharlieSprt    4        yes
+Animation       CWalkB	         CharlieSprt    4        yes
+Animation       CHit	         CharlieSprt    1        no
+Animation       C5M	         CharlieSprt    3        no
+Animation       C5L	         CharlieSprt    4        no
+Animation       C5H	         CharlieSprt    2        no
+Animation       C2L		 CharlieSprt    4        no
+Animation       C2M		 CharlieSprt    2        no
+Animation       C2H		 CharlieSprt    2        no
+Animation       C8L		 CharlieSprt    2        no
+Animation       C8M		 CharlieSprt    2        no
+Animation       C8H		 CharlieSprt    1        no
+Animation       C6L		 CharlieSprt    3        no
+Animation       C6M		 CharlieSprt    1        no
+Animation       C6H		 CharlieSprt    2        no

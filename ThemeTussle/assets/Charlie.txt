@@ -23,11 +23,11 @@ ForwardHits C6L C6M C6H
 #HitboxPos
 
 #5L
-HitboxPos 60 -30
+HitboxPos 60 -50
 #5M
 HitboxPos 60 90
 #5H
-HitboxPos 30 -30
+HitboxPos 60 -100
 #2L
 HitboxPos 60 30
 #2M
@@ -37,22 +37,22 @@ HitboxPos 40 0
 #6L
 HitboxPos 30 -60
 #6M
-HitboxPos 70 -30
+HitboxPos 0 10
 #6H
-HitboxPos 30 -30
+HitboxPos 100 50
 #8L
 HitboxPos 70 0
 #8M
-HitboxPos 50 40
+HitboxPos 50 -20
 #8H
-HitboxPos 15 15
+HitboxPos 15 0
 
 #########################################################################
 
 #HitboxSize
 
 #5L
-HitboxSize 100 50
+HitboxSize 100 40
 #5M
 HitboxSize 100 70
 #5H
@@ -62,19 +62,19 @@ HitboxSize 90 50
 #2M
 HitboxSize 130 55
 #2H
-HitboxSize 120 90
+HitboxSize 130 110
 #6L
-HitboxSize 160 145
+HitboxSize 160 165
 #6M
-HitboxSize 105 80
+HitboxSize 140 140
 #6H
 HitboxSize 140 150
 #8L
 HitboxSize 60 65
 #8M
-HitboxSize 70 70
+HitboxSize 70 100
 #8H
-HitboxSize 90 105
+HitboxSize 160 160
 
 #########################################################################
 
@@ -91,9 +91,9 @@ HurtboxPos -15 20
 #2M
 HurtboxPos -15 20
 #2H
-HurtboxPos -15 20
+HurtboxPos -40 20
 #6L
-HurtboxPos -30 70
+HurtboxPos -30 50
 #6M
 HurtboxPos -30 0
 #6H
@@ -163,7 +163,7 @@ Damage 30
 Damage 40
 Damage 26
 Damage 35
-Damage 50
+Damage 60
 Damage 16
 Damage 25
 Damage 30

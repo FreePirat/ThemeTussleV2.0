@@ -47,9 +47,9 @@ void Scene_Character_Select::init()
 		registerAction(sf::Keyboard::BackSpace, "TOGGLE");
 		m_title = "SELECT A STAGE";
 
-		m_menuLevels.push_back("WESTERN FIELDS");
-		m_menuLevels.push_back("THE KINGDOM OF WEBS");
 		m_menuLevels.push_back("AN ODD PLACE");
+		m_menuLevels.push_back("THE KINGDOM OF WEBS");
+		m_menuLevels.push_back("WESTERN FIELDS");
 	}
 
 	m_menuNames.push_back("NINA");
@@ -68,14 +68,14 @@ void Scene_Character_Select::init()
 	std::string randomPath;
 	if (characterPicker == 1) { randomPath = "../assets/nina.txt"; }
 	else if (characterPicker == 2) { randomPath = "../assets/nina.txt"; }
-	else if (characterPicker == 3) { randomPath = "../assets/nina.txt"; }
-	else { randomPath = "../assets/nina.txt"; }
+	else if (characterPicker == 3) { randomPath = "../assets/charlie.txt"; }
+	else { randomPath = "../assets/charlie.txt"; }
 
 	m_characterPath.push_back("../assets/nina.txt");
 	m_characterPath.push_back("../assets/nina.txt");
 	m_characterPath.push_back(randomPath);
-	m_characterPath.push_back("../assets/nina.txt");
-	m_characterPath.push_back("../assets/nina.txt");
+	m_characterPath.push_back("../assets/charlie.txt");
+	m_characterPath.push_back("../assets/charlie.txt");
 
 	m_stagePath.push_back("../assets/danger.txt");
 	m_stagePath.push_back("../assets/kingdom.txt");
@@ -198,7 +198,7 @@ void Scene_Character_Select::sRender()
 			else {
 				m_player2->addComponent<CSprite>(Assets::getInstance().getTexture("Charlie"));
 			}
-			m_notPlayable = true;
+			m_notPlayable = false;
 		}
 		else { m_charlieIcon->addComponent<CSprite>(Assets::getInstance().getTexture("CSCharlie")); }
 

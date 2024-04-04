@@ -22,7 +22,7 @@ void GameEngine::init(const std::string& path)
     loadConfigFromFile(path, width, height);
 
 
-    m_window.create(sf::VideoMode(width, height), "Theme Tussle");
+    m_window.create(sf::VideoMode(width, height), "Theme Tussle", sf::Style::Fullscreen);
 
     m_statisticsText.setFont(Assets::getInstance().getFont("main"));
     m_statisticsText.setPosition(15.0f, 5.0f);

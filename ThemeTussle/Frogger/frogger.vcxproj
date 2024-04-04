@@ -29,6 +29,7 @@
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene_Arcade.cpp" />
     <ClCompile Include="Scene_Character_Select.cpp" />
     <ClCompile Include="Scene_Tussle.cpp" />
     <ClCompile Include="Scene_Menu.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene_Arcade.h" />
     <ClInclude Include="Scene_Character_Select.h" />
     <ClInclude Include="Scene_Tussle.h" />
     <ClInclude Include="Scene_Menu.h" />

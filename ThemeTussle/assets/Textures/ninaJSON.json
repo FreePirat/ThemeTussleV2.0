@@ -1071,48 +1071,6 @@
 				"w": 360,
 				"h": 400
 			}
-		},
-		{
-			"filename": "NWin.png",
-			"frame": {
-				"x": 505,
-				"y": 80,
-				"w": 220,
-				"h": 400
-			},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 220,
-				"h": 400
-			},
-			"sourceSize": {
-				"w": 220,
-				"h": 400
-			}
-		},
-		{
-			"filename": "SDefault.png",
-			"frame": {
-				"x": 1320,
-				"y": 1450,
-				"w": 220,
-				"h": 400
-			},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 220,
-				"h": 400
-			},
-			"sourceSize": {
-				"w": 220,
-				"h": 400
-			}
 		}
 	],
 	"meta": {
