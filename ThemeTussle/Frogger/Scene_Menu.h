@@ -22,7 +22,7 @@ public:
 
 	void sRender() override;
 	void sDoAction(const Command& action) override;
-	
+	int	 m_number{ 0 };
 
 };
 

@@ -12,8 +12,8 @@ private:
 	std::vector<std::string>	m_levelPaths;
 	int							m_menuIndex{ 0 };
 	std::string					m_title;
-	int							m_volumeNumber{ 50 };
-	int							m_oldVolume{ 50 };
+	int							m_volumeNumber{ 100 };
+	int							m_oldVolume{ 100 };
 
 
 	void init();

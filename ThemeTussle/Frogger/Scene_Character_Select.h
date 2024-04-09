@@ -18,6 +18,7 @@ private:
 	sPtrEntt			        m_randomIcon{ nullptr };
 	sPtrEntt			        m_leoIcon{ nullptr };
 	sPtrEntt			        m_charlieIcon{ nullptr };
+	int							m_number{ 0 };
 
 	std::vector<std::string>	m_menuNames;
 	std::vector<std::string>	m_menuLevels;
@@ -37,7 +38,6 @@ private:
 	std::string					m_enemy;
 	bool						m_player1Picked{ false };
 	bool						m_notPlayable{ false };
-	
 
 	void						loadStage();
 

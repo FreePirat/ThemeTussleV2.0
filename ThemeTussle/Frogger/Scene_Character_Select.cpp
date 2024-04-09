@@ -378,7 +378,7 @@ void Scene_Character_Select::sDoAction(const Command& action)
 					else if (m_menuIndex == 2) { m_enemy = "../assets/nina.txt"; }
 					else if (m_menuIndex == 3) { m_enemy = "../assets/nina.txt"; }
 					//														              PLAYER CHARACTER FILE      ENEMY           STAGE FILE              MODE FILE        
-					m_game->changeScene("GAME", std::make_shared<Scene_Tussle>(m_game, m_characterPath[m_menuIndex], m_enemy,  m_stagePath[m_levelIndex], m_modeFilePath));
+					m_game->changeScene("GAME" + m_number++, std::make_shared<Scene_Tussle>(m_game, m_characterPath[m_menuIndex], m_enemy,  m_stagePath[m_levelIndex], m_modeFilePath));
 			} 
 			else if (!m_stageToggle && m_versus) {
 				if (!m_player1Picked) { m_character = m_characterPath[m_menuIndex]; m_player1Picked = true; }
@@ -386,7 +386,7 @@ void Scene_Character_Select::sDoAction(const Command& action)
 					//Picked Two Characters
 					SoundPlayer::getInstance().play("Select");
 					//																   PLAYER CHARACTER	  SECOND PLAYER CHARACTER             STAGE FILE             MODE FILE
-					m_game->changeScene("GAME", std::make_shared<Scene_Tussle>(m_game, m_character, m_characterPath[m_menuIndex], m_stagePath[m_levelIndex], m_modeFilePath));
+					m_game->changeScene("GAME" + m_number++, std::make_shared<Scene_Tussle>(m_game, m_character, m_characterPath[m_menuIndex], m_stagePath[m_levelIndex], m_modeFilePath));
 				}
 			}
 			else {
@@ -396,7 +396,7 @@ void Scene_Character_Select::sDoAction(const Command& action)
 			}
 		}
 		else if (action.name() == "BACK") {
-			if (!m_stageToggle) {  m_game->changeScene("MENU", nullptr, false); }
+			if (!m_stageToggle) {  m_game->changeScene("MENU" + m_number, nullptr, false); }
 			else { m_stageToggle = false; }
 		}
 	}

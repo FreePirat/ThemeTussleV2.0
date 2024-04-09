@@ -32,7 +32,7 @@ public:
 private:
     sf::Music						m_music;
     std::map<String, String>	    m_filenames;
-    float							m_volume{25};
+    float							m_volume{100};
 };
 
 

@@ -7,6 +7,7 @@
 #include "MusicPlayer.h"
 #include "Scene_Tutorial.h"
 #include "Scene_Arcade.h"
+#include <random>
 
 void Scene_Menu::onEnd()
 {
@@ -127,7 +128,7 @@ void Scene_Menu::sDoAction(const Command& action)
 			}
 			if (m_menuIndex == 1) {
 				SoundPlayer::getInstance().play("Select");
-				m_game->changeScene("VERSUS", std::make_shared<Scene_Character_Select>(m_game, m_levelPaths[m_menuIndex]));
+				m_game->changeScene("VERSUS" + m_number++, std::make_shared<Scene_Character_Select>(m_game, m_levelPaths[m_menuIndex]));
 			}
 			if (m_menuIndex == 2) {
 				SoundPlayer::getInstance().play("Select");

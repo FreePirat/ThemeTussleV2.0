@@ -18,6 +18,7 @@ private:
     bool			m_drawTextures{true};
     bool			m_drawAABB{false};
     bool			m_drawGrid{false};
+    int	            m_number{ 0 };
 
     bool            m_arcade{ false };
     bool            m_versus{ false };
@@ -35,8 +36,6 @@ private:
     sf::Time        m_playerIdleTime = sf::seconds(10);
     sf::Time        m_pRecovery = sf::seconds(0);
     sf::Vector2f    m_playerCurrentPushPos{ -30, 0 };
-    bool            m_pmoveHasEnded = { true };
-    bool            m_emoveHasEnded = { true };
 
     std::string     m_pWin;
     std::string     m_pLose;

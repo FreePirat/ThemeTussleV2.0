@@ -622,7 +622,7 @@ void Scene_Tussle::sCollisions() {
             else { SoundPlayer::getInstance().play("BigHit"); }
         }
         
-        m_HitTimer = sf::seconds(2);
+        m_HitTimer = sf::seconds(0.5);
         m_hitNumber = m_playerCurAttack;
     }
 
@@ -635,7 +635,7 @@ void Scene_Tussle::sCollisions() {
             else { SoundPlayer::getInstance().play("BigHit"); }
         }
         
-        m_HitTimer = sf::seconds(2);
+        m_HitTimer = sf::seconds(0.5);
         m_hitNumber = m_enemyCurAttack;
     }
 }
@@ -680,12 +680,14 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
     //If the Player's Recovery Time Isn't 0, Tick Down and Make Sure They Can't be Hit
     if (m_pRecovery.asSeconds() > 0) {
         m_pRecovery -= dt;
+        m_playerCanBeHit = false;
         m_player->removeComponent<CHurtBox>();
     }
     else { m_playerCanBeHit = true;}
 
     if (m_eRecovery.asSeconds() > 0) {
         m_eRecovery -= dt;
+        m_enemyCanBeHit = false;
         m_enemy->removeComponent<CHurtBox>();
     }
     else { m_enemyCanBeHit = true;}
@@ -706,9 +708,15 @@ void Scene_Tussle::sUpdate(sf::Time dt) {
         m_time -= dt;
     }
 
+    std::random_device rd;
+    std::mt19937 rand(rd());
+
+    std::uniform_int_distribution<> dis(1, 100);
+    m_number = dis(rand);
+
     if (m_time.asSeconds() <= 0 || m_playerHP <= 0 || m_enemyHP <= 0) {
-        if (m_enemyHP > m_playerHP) { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_eWin, m_pLose, 2)); }
-        else { m_game->changeScene("ENDSCREEN", std::make_shared<Scene_WinScreen>(m_game, m_pWin, m_eLose, 1)); }
+        if (m_enemyHP > m_playerHP) { m_game->changeScene("ENDSCREEN" +m_number, std::make_shared<Scene_WinScreen>(m_game, m_eWin, m_pLose, 2)); }
+        else { m_game->changeScene("ENDSCREEN" + m_number, std::make_shared<Scene_WinScreen>(m_game, m_pWin, m_eLose, 1)); }
     }
 
     checkPlayerState();
@@ -752,7 +760,6 @@ void Scene_Tussle::sAnimation(sf::Time dt) {
                         if(playerState == "STUN"){ m_pRecovery = sf::seconds(1); }
                         m_player->addComponent<CState>("5");                      
                     }
-                    m_pmoveHasEnded = true;
                     m_playerCanMove = true;
                 }
             }
@@ -776,7 +783,6 @@ void Scene_Tussle::sAnimation(sf::Time dt) {
                     }
 
                     m_enemyCanMove = true;
-                    m_emoveHasEnded = true;
                 }
             }
         }
@@ -988,7 +994,6 @@ void Scene_Tussle::statePlayerCheck(std::string state, std::string animation,
         m_player->getComponent<CInput>().LEFT = false;
         m_player->getComponent<CInput>().RIGHT = false;
         m_playerCanMove = false;
-        m_pmoveHasEnded = false;
     }
 }
 
@@ -1021,7 +1026,6 @@ void Scene_Tussle::stateEnemyCheck(std::string state, std::string animation,
         m_enemy->getComponent<CInput>().LEFT2 = false;
         m_enemy->getComponent<CInput>().RIGHT2 = false;
         m_enemyCanMove = false;
-        m_emoveHasEnded = false;
     }
 }
 
@@ -1041,7 +1045,7 @@ void Scene_Tussle::stateCheckNohitBox(sPtrEntt character, std::string state, std
         }
 
         if (state == "6" || state == "4") {
-            if (SoundPlayer::getInstance().isEmpty()) { SoundPlayer::getInstance().play("Walk"); }
+            //if (SoundPlayer::getInstance().isEmpty()) { SoundPlayer::getInstance().play("Walk"); }
         }
 
         character->removeComponent<CHitBox>();
