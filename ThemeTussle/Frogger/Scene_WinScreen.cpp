@@ -13,9 +13,7 @@ void Scene_WinScreen::init()
 
 void Scene_WinScreen::onEnd()
 {
-	SoundPlayer::getInstance().play("Select");
-	MusicPlayer::getInstance().play("MainTheme");
-	m_game->changeScene("MENU", nullptr, false);
+	m_game->window().close();
 }
 
 Scene_WinScreen::Scene_WinScreen(GameEngine* gameEngine, const std::string& winner, const std::string& loser, int winnerNumber) : Scene(gameEngine)
