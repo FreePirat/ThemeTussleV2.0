@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Theme-Tussle</title>
-	<style>
-		body {
-			background-color: #0077be;
-			color: #fff;
-			font-family: Arial, sans-serif;
-			margin: 5;
-			padding: 5;
-		}
-		p{
-			font-size: 12pt;
-		}
-		
-	</style>
-</head>
 <body>
 	<div style="text-align: right; float: right;">
 <a href="Images/ICON.png" target="_blank"><img src="Images/ICON.png" width="12.5%" alt="ICONPNG" title="" /></a>
